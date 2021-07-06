@@ -1,5 +1,5 @@
 {
-  "name": "sax",
+  "name": "@keeex/sax",
   "description": "An evented streaming XML parser in JavaScript",
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
   "contributors": [
@@ -13,9 +13,7 @@
   "license": "ISC",
   "scripts": {
     "test": "tap test/*.js",
-    "posttest": "npm exec eslint .",
-    "preversion": "npm test",
-    "postversion": "npm publish"
+    "posttest": "npm exec eslint ."
   },
   "repository": "git://github.com/isaacs/sax-js.git",
   "files": [
