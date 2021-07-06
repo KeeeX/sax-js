@@ -13,7 +13,7 @@
   "license": "ISC",
   "scripts": {
     "test": "tap test/*.js --cov -j4",
-    "posttest": "standard -F test/*.js lib/*.js",
+    "posttest": "npm exec eslint .",
     "preversion": "npm test",
     "postversion": "npm publish"
   },
