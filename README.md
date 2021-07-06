@@ -5,6 +5,19 @@ A sax-style parser for XML and HTML.
 Designed with [node](http://nodejs.org/) in mind, but should work fine in
 the browser or other CommonJS implementations.
 
+## @keeex fork
+
+The upstream (`isaacs/sax-js`) was forked to fix some specific issues with our internal environments
+requirements, and this fork is slowly moving away from upstream.
+
+If you're only interested in fixing the `new Buffer` used in tests and removing the dependency to
+`node:stream` (which was a requirement for using in React-Native), checkout the branch
+`fix_node_issues`.
+
+Ideally, this branch could have been a PR to the upstream but we currently lack the workforce to
+properly write a full PR, and also it might not be beneficial for everyone to remove the
+compatibility with node's streams.
+
 ## What This Is
 
 * A very simple tool to parse through an XML string.
