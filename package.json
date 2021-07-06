@@ -12,7 +12,7 @@
   "main": "lib/sax.js",
   "license": "ISC",
   "scripts": {
-    "test": "tap test/*.js --cov -j4",
+    "test": "tap test/*.js",
     "posttest": "npm exec eslint .",
     "preversion": "npm test",
     "postversion": "npm publish"
@@ -21,11 +21,18 @@
   "files": [
     "lib/sax.js"
   ],
+  "tap": {
+    "check-coverage": true,
+    "branches": 75,
+    "functions": 60,
+    "lines": 75,
+    "statements": 75
+  },
   "devDependencies": {
     "@keeex/eslint-config": "^1.5.1",
     "eslint": "^7.30.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-promise": "^5.1.0",
-    "tap": "^10.5.1"
+    "tap": "^15.0.9"
   }
 }
