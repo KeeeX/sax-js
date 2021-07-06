@@ -1,49 +1,51 @@
-require(__dirname).test({
+const tests = require("./index.js");
+
+tests.test({
   xml: "<root xml:lang='en'/>",
   expect: [
     [
-      'opentagstart',
+      "opentagstart",
       {
-        name: 'root',
+        name: "root",
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
-      'attribute',
+      "attribute",
       {
-        name: 'xml:lang',
-        local: 'lang',
-        prefix: 'xml',
-        uri: 'http://www.w3.org/XML/1998/namespace',
-        value: 'en'
-      }
+        name: "xml:lang",
+        local: "lang",
+        prefix: "xml",
+        uri: "http://www.w3.org/XML/1998/namespace",
+        value: "en",
+      },
     ],
     [
-      'opentag',
+      "opentag",
       {
-        name: 'root',
-        uri: '',
-        prefix: '',
-        local: 'root',
+        name: "root",
+        uri: "",
+        prefix: "",
+        local: "root",
         attributes: {
-          'xml:lang': {
-            name: 'xml:lang',
-            local: 'lang',
-            prefix: 'xml',
-            uri: 'http://www.w3.org/XML/1998/namespace',
-            value: 'en'
-          }
+          "xml:lang": {
+            name: "xml:lang",
+            local: "lang",
+            prefix: "xml",
+            uri: "http://www.w3.org/XML/1998/namespace",
+            value: "en",
+          },
         },
         ns: {},
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
     [
-      'closetag',
-      'root'
-    ]
+      "closetag",
+      "root",
+    ],
   ],
   strict: true,
-  opt: { xmlns: true }
-})
+  opt: {xmlns: true},
+});

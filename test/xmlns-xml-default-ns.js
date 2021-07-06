@@ -1,71 +1,71 @@
-var xmlnsAttr = {
-  name: 'xmlns',
-  value: 'http://foo',
-  prefix: 'xmlns',
-  local: '',
-  uri: 'http://www.w3.org/2000/xmlns/'
-}
+const tests = require("./index.js");
 
-var attrAttr = {
-  name: 'attr',
-  value: 'bar',
-  prefix: '',
-  local: 'attr',
-  uri: ''
-}
+const xmlnsAttr = {
+  name: "xmlns",
+  value: "http://foo",
+  prefix: "xmlns",
+  local: "",
+  uri: "http://www.w3.org/2000/xmlns/",
+};
 
-require(__dirname).test({
+const attrAttr = {
+  name: "attr",
+  value: "bar",
+  prefix: "",
+  local: "attr",
+  uri: "",
+};
+
+tests.test({
   xml: "<elm xmlns='http://foo' attr='bar'/>",
   expect: [
     [
-      'opentagstart',
+      "opentagstart",
       {
-        name: 'elm',
+        name: "elm",
         attributes: {},
-        ns: {}
-      }
+        ns: {},
+      },
     ],
     [
-      'opennamespace',
-      { prefix: '', uri: 'http://foo' }
+      "opennamespace",
+      {prefix: "", uri: "http://foo"},
     ],
     [
-      'attribute',
-      xmlnsAttr
+      "attribute",
+      xmlnsAttr,
     ],
     [
-      'attribute',
-      attrAttr
+      "attribute",
+      attrAttr,
     ],
     [
-      'opentag',
+      "opentag",
       {
-        name: 'elm',
-        prefix: '',
-        local: 'elm',
-        uri: 'http://foo',
-        ns: { '': 'http://foo' },
+        name: "elm",
+        prefix: "",
+        local: "elm",
+        uri: "http://foo",
+        ns: {"": "http://foo"},
         attributes: {
           xmlns: xmlnsAttr,
-          attr: attrAttr
+          attr: attrAttr,
         },
-        isSelfClosing: true
-      }
+        isSelfClosing: true,
+      },
     ],
     [
-      'closetag',
-      'elm'
+      "closetag",
+      "elm",
     ],
     [
-      'closenamespace',
+      "closenamespace",
       {
-        prefix: '',
-        uri: 'http://foo'
-      }
-    ]
+        prefix: "",
+        uri: "http://foo",
+      },
+    ],
   ],
   strict: true,
-  opt: {
-    xmlns: true
-  }
-})
+  opt: {xmlns: true},
+});

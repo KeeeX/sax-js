@@ -1,12 +1,14 @@
+const tests = require("./index.js");
+
 // split high-order numeric attributes into surrogate pairs
-require(__dirname).test({
-  xml: '<a>&#x1f525;</a>',
+tests.test({
+  xml: "<a>&#x1f525;</a>",
   expect: [
-    [ 'opentagstart', { name: 'A', attributes: {} } ],
-    [ 'opentag', { name: 'A', attributes: {}, isSelfClosing: false } ],
-    [ 'text', '\ud83d\udd25' ],
-    [ 'closetag', 'A' ]
+    ["opentagstart", {name: "A", attributes: {}}],
+    ["opentag", {name: "A", attributes: {}, isSelfClosing: false}],
+    ["text", "\ud83d\udd25"],
+    ["closetag", "A"],
   ],
   strict: false,
-  opt: {}
-})
+  opt: {},
+});

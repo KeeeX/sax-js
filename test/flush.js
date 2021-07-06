@@ -1,14 +1,16 @@
-var parser = require(__dirname).test({
-  expect: [
-    ['opentagstart', {'name': 'T', attributes: {}}],
-    ['opentag', {'name': 'T', attributes: {}, isSelfClosing: false}],
-    ['text', 'flush'],
-    ['text', 'rest'],
-    ['closetag', 'T']
-  ]
-})
+const tests = require("./index.js");
 
-parser.write('<T>flush')
-parser.flush()
-parser.write('rest</T>')
-parser.close()
+const parser = tests.test({
+  expect: [
+    ["opentagstart", {"name": "T", "attributes": {}}],
+    ["opentag", {"name": "T", "attributes": {}, "isSelfClosing": false}],
+    ["text", "flush"],
+    ["text", "rest"],
+    ["closetag", "T"],
+  ],
+});
+
+parser.write("<T>flush");
+parser.flush();
+parser.write("rest</T>");
+parser.close();

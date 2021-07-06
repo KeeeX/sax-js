@@ -1,45 +1,47 @@
+const tests = require("./index.js");
+
 // unquoted attributes should be ok in non-strict mode
 // https://github.com/isaacs/sax-js/issues/31
-require(__dirname).test({
-  xml: '<span class=test hello=world></span>',
+tests.test({
+  xml: "<span class=test hello=world></span>",
   expect: [
     [
-      'opentagstart',
+      "opentagstart",
       {
-        name: 'SPAN',
-        attributes: {}
-      }
+        name: "SPAN",
+        attributes: {},
+      },
     ],
     [
-      'attribute',
+      "attribute",
       {
-        name: 'CLASS',
-        value: 'test'
-      }
+        name: "CLASS",
+        value: "test",
+      },
     ],
     [
-      'attribute',
+      "attribute",
       {
-        name: 'HELLO',
-        value: 'world'
-      }
+        name: "HELLO",
+        value: "world",
+      },
     ],
     [
-      'opentag',
+      "opentag",
       {
-        name: 'SPAN',
+        name: "SPAN",
         attributes: {
-          CLASS: 'test',
-          HELLO: 'world'
+          CLASS: "test",
+          HELLO: "world",
         },
-        isSelfClosing: false
-      }
+        isSelfClosing: false,
+      },
     ],
     [
-      'closetag',
-      'SPAN'
-    ]
+      "closetag",
+      "SPAN",
+    ],
   ],
   strict: false,
-  opt: {}
-})
+  opt: {},
+});

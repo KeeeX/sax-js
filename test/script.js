@@ -1,66 +1,68 @@
-require(__dirname).test({
+const tests = require("./index.js");
+
+tests.test({
   xml: "<html><head><script>if (1 < 0) { console.log('elo there'); }</script></head></html>",
   expect: [
     [
-      'opentagstart',
+      "opentagstart",
       {
-        'name': 'HTML',
-        'attributes': {}
-      }
+        "name": "HTML",
+        "attributes": {},
+      },
     ],
     [
-      'opentag',
+      "opentag",
       {
-        'name': 'HTML',
-        'attributes': {},
-        'isSelfClosing': false
-      }
+        "name": "HTML",
+        "attributes": {},
+        "isSelfClosing": false,
+      },
     ],
     [
-      'opentagstart',
+      "opentagstart",
       {
-        'name': 'HEAD',
-        'attributes': {}
-      }
+        "name": "HEAD",
+        "attributes": {},
+      },
     ],
     [
-      'opentag',
+      "opentag",
       {
-        'name': 'HEAD',
-        'attributes': {},
-        'isSelfClosing': false
-      }
+        "name": "HEAD",
+        "attributes": {},
+        "isSelfClosing": false,
+      },
     ],
     [
-      'opentagstart',
+      "opentagstart",
       {
-        'name': 'SCRIPT',
-        'attributes': {}
-      }
+        "name": "SCRIPT",
+        "attributes": {},
+      },
     ],
     [
-      'opentag',
+      "opentag",
       {
-        'name': 'SCRIPT',
-        'attributes': {},
-        'isSelfClosing': false
-      }
+        "name": "SCRIPT",
+        "attributes": {},
+        "isSelfClosing": false,
+      },
     ],
     [
-      'script',
-      "if (1 < 0) { console.log('elo there'); }"
+      "script",
+      "if (1 < 0) { console.log('elo there'); }",
     ],
     [
-      'closetag',
-      'SCRIPT'
+      "closetag",
+      "SCRIPT",
     ],
     [
-      'closetag',
-      'HEAD'
+      "closetag",
+      "HEAD",
     ],
     [
-      'closetag',
-      'HTML'
-    ]
-  ]
-})
+      "closetag",
+      "HTML",
+    ],
+  ],
+});

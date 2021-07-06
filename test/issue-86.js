@@ -1,85 +1,87 @@
-require(__dirname).test({
-  xml: '<root>abc</root>de<f',
+const tests = require("./index.js");
+
+tests.test({
+  xml: "<root>abc</root>de<f",
   expect: [
     [
-      'opentagstart',
+      "opentagstart",
       {
-        name: 'ROOT',
-        attributes: {}
-      }
-    ],
-    [
-      'opentag',
-      {
-        name: 'ROOT',
+        name: "ROOT",
         attributes: {},
-        isSelfClosing: false
-      }
+      },
     ],
     [
-      'text',
-      'abc'
+      "opentag",
+      {
+        name: "ROOT",
+        attributes: {},
+        isSelfClosing: false,
+      },
     ],
     [
-      'closetag',
-      'ROOT'
+      "text",
+      "abc",
     ],
     [
-      'text',
-      'de<f'
-    ]
+      "closetag",
+      "ROOT",
+    ],
+    [
+      "text",
+      "de<f",
+    ],
   ],
   strict: false,
-  opt: {}
-})
+  opt: {},
+});
 
-require(__dirname).test({
-  xml: '<root>abc</root>de<f',
+tests.test({
+  xml: "<root>abc</root>de<f",
   expect: [
     [
-      'opentagstart',
+      "opentagstart",
       {
-        name: 'root',
-        attributes: {}
-      }
-    ],
-    [
-      'opentag',
-      {
-        name: 'root',
+        name: "root",
         attributes: {},
-        isSelfClosing: false
-      }
+      },
     ],
     [
-      'text',
-      'abc'
+      "opentag",
+      {
+        name: "root",
+        attributes: {},
+        isSelfClosing: false,
+      },
     ],
     [
-      'closetag',
-      'root'
+      "text",
+      "abc",
     ],
     [
-      'error',
-      'Text data outside of root node.\nLine: 0\nColumn: 17\nChar: d'
+      "closetag",
+      "root",
     ],
     [
-      'text',
-      'd'
+      "error",
+      "Text data outside of root node.\nLine: 0\nColumn: 17\nChar: d",
     ],
     [
-      'error',
-      'Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e'
+      "text",
+      "d",
     ],
     [
-      'text',
-      'e'
+      "error",
+      "Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e",
     ],
     [
-      'error',
-      'Unexpected end\nLine: 0\nColumn: 20\nChar: '
-    ]
+      "text",
+      "e",
+    ],
+    [
+      "error",
+      "Unexpected end\nLine: 0\nColumn: 20\nChar: ",
+    ],
   ],
   strict: true,
-  opt: {}
-})
+  opt: {},
+});

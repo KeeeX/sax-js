@@ -1,21 +1,23 @@
-require(__dirname).test({
-  xml: '<span>Welcome,</span> to monkey land',
+const tests = require("./index.js");
+
+tests.test({
+  xml: "<span>Welcome,</span> to monkey land",
   expect: [
-    ['opentagstart', {
-      'name': 'SPAN',
-      'attributes': {}
+    ["opentagstart", {
+      "name": "SPAN",
+      "attributes": {},
     }],
-    ['opentag', {
-      'name': 'SPAN',
-      'attributes': {},
-      isSelfClosing: false
+    ["opentag", {
+      "name": "SPAN",
+      "attributes": {},
+      "isSelfClosing": false,
     }],
-    ['text', 'Welcome,'],
-    ['closetag', 'SPAN'],
-    ['text', ' to monkey land'],
-    ['end'],
-    ['ready']
+    ["text", "Welcome,"],
+    ["closetag", "SPAN"],
+    ["text", " to monkey land"],
+    ["end"],
+    ["ready"],
   ],
   strict: false,
-  opt: {}
-})
+  opt: {},
+});

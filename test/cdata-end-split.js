@@ -1,14 +1,16 @@
-require(__dirname).test({
+const tests = require("./index.js");
+
+tests.test({
   expect: [
-    ['opentagstart', {'name': 'R', 'attributes': {}}],
-    ['opentag', {'name': 'R', 'attributes': {}, 'isSelfClosing': false}],
-    ['opencdata', undefined],
-    ['cdata', ' this is '],
-    ['closecdata', undefined],
-    ['closetag', 'R']
-  ]
+    ["opentagstart", {"name": "R", "attributes": {}}],
+    ["opentag", {"name": "R", "attributes": {}, "isSelfClosing": false}],
+    ["opencdata", undefined],
+    ["cdata", " this is "],
+    ["closecdata", undefined],
+    ["closetag", "R"],
+  ],
 })
-  .write('<r><![CDATA[ this is ]')
-  .write(']>')
-  .write('</r>')
-  .close()
+  .write("<r><![CDATA[ this is ]")
+  .write("]>")
+  .write("</r>")
+  .close();
