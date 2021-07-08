@@ -17,7 +17,11 @@
   },
   "repository": "git://github.com/isaacs/sax-js.git",
   "files": [
-    "lib/sax.js"
+    "lib/sax.js",
+    "lib/consts.js",
+    "lib/saxparser.js",
+    "lib/saxstream.js",
+    "lib/utils.js"
   ],
   "tap": {
     "check-coverage": true,
