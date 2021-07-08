@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 /* eslint-disable max-len */
 /* eslint-disable no-magic-numbers */
+
+import {EntitiesList, Namespace} from "./types";
+
 // When we pass the MAX_BUFFER_LENGTH position, start checking for buffer overruns.
 // When we check, schedule the next check for MAX_BUFFER_LENGTH - (max(buffer lengths)),
 // since that's the earliest that a buffer overrun could occur.  This way, checks are
@@ -9,48 +14,65 @@
 // the caller, so it is assumed to be safe.  Thus, a call to write() may, in the extreme
 // edge case, result in creating at most one complete copy of the string passed in.
 // Set to Infinity to have unlimited buffers.
-const MAX_BUFFER_LENGTH = 64 * 1024;
+export const MAX_BUFFER_LENGTH = 64 * 1024;
 
-const BUFFERS = [
-  "comment",
-  "sgmlDecl",
-  "textNode",
-  "tagName",
-  "doctype",
-  "procInstName",
-  "procInstBody",
-  "entity",
-  "attribName",
-  "attribValue",
-  "cdata",
-  "script",
-];
+export enum BufferType {
+  comment = "comment",
+  sgmlDecl = "sgmlDecl",
+  textNode = "textNode",
+  tagName = "tagName",
+  doctype = "doctype",
+  procInstName = "procInstName",
+  procInstBody = "procInstBody",
+  entity = "entity",
+  attribName = "attribName",
+  attribValue = "attribValue",
+  cdata = "cdata",
+  script = "script",
+}
 
-const EVENTS = [
-  "text",
-  "processinginstruction",
-  "sgmldeclaration",
-  "doctype",
-  "comment",
-  "opentagstart",
-  "attribute",
-  "opentag",
-  "closetag",
-  "opencdata",
-  "cdata",
-  "closecdata",
-  "error",
-  "end",
-  "ready",
-  "script",
-  "opennamespace",
-  "closenamespace",
-];
+export enum StreamEvents {
+  text = "ontext",
+  processinginstruction = "onprocessinginstruction",
+  sgmldeclaration = "onsgmldeclaration",
+  doctype = "ondoctype",
+  comment = "oncomment",
+  opentagstart = "onopentagstart",
+  attribute = "onattribute",
+  opentag = "onopentag",
+  closetag = "onclosetag",
+  opencdata = "onopencdata",
+  cdata = "oncdata",
+  closecdata = "onclosecdata",
+  ready = "onready",
+  script = "onscript",
+  opennamespace = "onopennamespace",
+  closenamespace = "onclosenamespace",
+}
 
-const STREAM_EVENTS = EVENTS.filter(ev => ev !== "error" && ev !== "end");
+export enum ParserEvents {
+  text = "ontext",
+  processinginstruction = "onprocessinginstruction",
+  sgmldeclaration = "onsgmldeclaration",
+  doctype = "ondoctype",
+  comment = "oncomment",
+  opentagstart = "onopentagstart",
+  attribute = "onattribute",
+  opentag = "onopentag",
+  closetag = "onclosetag",
+  opencdata = "onopencdata",
+  cdata = "oncdata",
+  closecdata = "onclosecdata",
+  error = "onerror",
+  end = "onend",
+  ready = "onready",
+  script = "onscript",
+  opennamespace = "onopennamespace",
+  closenamespace = "onclosenamespace",
+}
 
 let S = 0;
-const STATE = {
+export const STATE: Record<string, number | string> = {
   BEGIN: S++, // leading byte order mark or whitespace
   BEGIN_WHITESPACE: S++, // leading whitespace
   TEXT: S++, // general stuff
@@ -89,7 +111,7 @@ const STATE = {
   SCRIPT_ENDING: S++, // <script> ... <
 };
 
-const XML_ENTITIES = {
+export const XML_ENTITIES: EntitiesList = {
   "amp": "&",
   "gt": ">",
   "lt": "<",
@@ -97,7 +119,7 @@ const XML_ENTITIES = {
   "apos": "'",
 };
 
-const ENTITIES = {
+export const ENTITIES: EntitiesList = {
   "amp": "&",
   "gt": ">",
   "lt": "<",
@@ -363,11 +385,11 @@ for (const s of Object.keys(STATE)) {
   STATE[STATE[s]] = s;
 }
 
-const CDATA = "[CDATA[";
-const DOCTYPE = "DOCTYPE";
-const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
-const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
-const rootNS = {xml: XML_NAMESPACE, xmlns: XMLNS_NAMESPACE};
+export const CDATA = "[CDATA[";
+export const DOCTYPE = "DOCTYPE";
+export const XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
+export const XMLNS_NAMESPACE = "http://www.w3.org/2000/xmlns/";
+export const rootNS: Namespace = {xml: XML_NAMESPACE, xmlns: XMLNS_NAMESPACE};
 
 // this really needs to be replaced with character classes.
 // XML allows all manner of ridiculous numbers and digits.
@@ -378,28 +400,9 @@ const rootNS = {xml: XML_NAMESPACE, xmlns: XMLNS_NAMESPACE};
 // without a significant breaking change to either this  parser, or the
 // JavaScript language.  Implementation of an emoji-capable xml parser
 // is left as an exercise for the reader.
-const nameStart = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/u;
+export const nameStart = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/u;
 // eslint-disable-next-line no-misleading-character-class
-const nameBody = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/u;
-const entityStart = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/u;
+export const nameBody = /[:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/u;
+export const entityStart = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]/u;
 // eslint-disable-next-line no-misleading-character-class
-const entityBody = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/u;
-
-module.exports = {
-  MAX_BUFFER_LENGTH,
-  BUFFERS,
-  EVENTS,
-  STATE,
-  XML_ENTITIES,
-  ENTITIES,
-  CDATA,
-  DOCTYPE,
-  XML_NAMESPACE,
-  XMLNS_NAMESPACE,
-  rootNS,
-  nameStart,
-  nameBody,
-  entityStart,
-  entityBody,
-  STREAM_EVENTS,
-};
+export const entityBody = /[#:_A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\u00B7\u0300-\u036F\u203F-\u2040.\d-]/u;

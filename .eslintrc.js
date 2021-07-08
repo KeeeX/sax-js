@@ -1,1 +1,1 @@
-module.exports = require("@keeex/eslint-config")();
+module.exports = require("@keeex/eslint-config")({typescript: "./tsconfig.json"});
