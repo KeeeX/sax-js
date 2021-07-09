@@ -16,3 +16,12 @@ export {
   SAXParser,
   SAXStream,
 };
+
+const exported = {
+  parser,
+  createStream,
+  SAXParser,
+  SAXStream,
+};
+
+export default exported;
