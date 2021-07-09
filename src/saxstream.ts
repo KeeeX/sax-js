@@ -1,13 +1,17 @@
-import {StringDecoder} from "string_decoder";
+import SD, {StringDecoder as StringDecoderType} from "string_decoder";
+import {Buffer as SafeBuffer} from "safe-buffer";
 import {ParserEvents, ParserEventsInterface, StreamEvents, StreamEventsInterface} from "./consts.js";
 import SAXParser, {SAXParserOpts} from "./saxparser.js";
 import {EventHandler} from "./types.js";
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const {StringDecoder} = SD;
 
 export default class SAXStream implements ParserEventsInterface {
   public onerror: EventHandler | undefined;
   public onend: EventHandler | undefined;
   private _parser: SAXParser;
-  private _decoder: StringDecoder | undefined;
+  private _decoder: StringDecoderType | undefined;
   private events: StreamEventsInterface = {
     ontext: [],
     onprocessinginstruction: [],
@@ -172,17 +176,11 @@ export default class SAXStream implements ParserEventsInterface {
     let effectiveData;
     if (typeof data === "string") {
       effectiveData = data;
-    } else if (
-      typeof Buffer === "function"
-        && typeof Buffer.isBuffer === "function"
-        && Buffer.isBuffer(data)
-    ) {
+    } else {
       if (!this._decoder) {
         this._decoder = new StringDecoder();
       }
-      effectiveData = this._decoder.write(data);
-    } else {
-      effectiveData = data.toString();
+      effectiveData = this._decoder.write(SafeBuffer.from(data) as unknown as Buffer);
     }
     this._parser.write(effectiveData);
     // this.emit(.data, effectiveData);
