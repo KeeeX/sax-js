@@ -1,15 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable no-process-env */
-const t = require("tap");
-const sax = require("../lib/sax.js");
-const {ParserEvents} = require("../lib/consts.js");
-
-exports.sax = sax;
+import esMain from "es-main";
+import t from "tap";
+import * as sax from "../lib/sax.js";
+import {ParserEvents} from "../lib/consts.js";
 
 // handy way to do simple unit tests
 // if the options contains an xml string, it'll be written and the parser closed.
 // otherwise, it's assumed that the test will write and close.
-exports.test = function test(options) {
+const test = options => {
   const xml = options.xml;
   const parser = sax.parser(options.strict, options.opt);
   const expect = options.expect;
@@ -54,6 +53,13 @@ exports.test = function test(options) {
   return parser;
 };
 
-if (module === require.main) {
+if (esMain(import.meta)) {
   t.pass("common test file");
 }
+
+const exported = {
+  sax,
+  test,
+};
+
+export default exported;

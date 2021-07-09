@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-const tests = require("./index.js");
+import tests from "./index.js";
 
 // should be the same both ways.
 const xmls = [

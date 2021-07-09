@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 // stray ending tags should just be ignored in non-strict mode.
 // https://github.com/isaacs/sax-js/issues/32

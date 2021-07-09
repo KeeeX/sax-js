@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 // split high-order numeric attributes into surrogate pairs
 tests.test({

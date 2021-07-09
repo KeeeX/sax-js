@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 // https://github.com/isaacs/sax-js/issues/33
 tests.test({
