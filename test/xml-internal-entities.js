@@ -88,7 +88,7 @@ const parser = tests.test({
 });
 
 for (const entity of Object.keys(entitiesToTest)) {
-  parser.ENTITIES[entity] = ENTITIES[entity];
+  parser.parserEntities[entity] = ENTITIES[entity];
 }
 
 parser.write(xmlStart + xmlEnd).close();

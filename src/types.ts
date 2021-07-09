@@ -1,4 +1,5 @@
-export type EntitiesList = Record<string, string | number>;
+export type EntitiesBaseList = Record<string, string | number>;
+export type EntitiesList = Record<string, string>;
 export type Namespace = Record<string, string>;
 export type EventHandler = (data?: unknown) => void;
 

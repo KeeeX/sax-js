@@ -2,7 +2,7 @@
 /* eslint-disable no-process-env */
 const t = require("tap");
 const sax = require("../lib/sax.js");
-const {EVENTS} = require("../lib/consts.js");
+const {ParserEvents} = require("../lib/consts.js");
 
 exports.sax = sax;
 
@@ -14,7 +14,7 @@ exports.test = function test(options) {
   const parser = sax.parser(options.strict, options.opt);
   const expect = options.expect;
   let e = 0;
-  EVENTS.forEach(ev => {
+  Object.keys(ParserEvents).forEach(ev => {
     parser[`on${ev}`] = n => {
       if (process.env.DEBUG) {
         console.error({

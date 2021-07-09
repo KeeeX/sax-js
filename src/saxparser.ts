@@ -15,6 +15,7 @@ import {
   XML_NAMESPACE,
   XMLNS_NAMESPACE,
   ParserEvents,
+  ParserEventsInterface,
 } from "./consts.js";
 import {EntitiesList, EventHandler, Namespace, TagElem} from "./types.js";
 import {
@@ -54,33 +55,30 @@ const emptyBuffers: Record<BufferType, string> = {
   script: "",
 };
 
-const emptyEvents: Record<ParserEvents, EventHandler | undefined> = {
-  ontext: undefined,
-  onprocessinginstruction: undefined,
-  onsgmldeclaration: undefined,
-  ondoctype: undefined,
-  oncomment: undefined,
-  onopentagstart: undefined,
-  onattribute: undefined,
-  onopentag: undefined,
-  onclosetag: undefined,
-  onopencdata: undefined,
-  oncdata: undefined,
-  onclosecdata: undefined,
-  onerror: undefined,
-  onend: undefined,
-  onready: undefined,
-  onscript: undefined,
-  onopennamespace: undefined,
-  onclosenamespace: undefined,
-};
-
 type CaseFunction = (str: string) => string;
 
 const cfToLowerCase = (str: string) => str.toLowerCase();
 const cfToUpperCase = (str: string) => str.toUpperCase();
 
-export default class SAXParser {
+export default class SAXParser implements ParserEventsInterface {
+  public ontext: EventHandler | undefined;
+  public onprocessinginstruction: EventHandler | undefined;
+  public onsgmldeclaration: EventHandler | undefined;
+  public ondoctype: EventHandler | undefined;
+  public oncomment: EventHandler | undefined;
+  public onopentagstart: EventHandler | undefined;
+  public onattribute: EventHandler | undefined;
+  public onopentag: EventHandler | undefined;
+  public onclosetag: EventHandler | undefined;
+  public onopencdata: EventHandler | undefined;
+  public oncdata: EventHandler | undefined;
+  public onclosecdata: EventHandler | undefined;
+  public onerror: EventHandler | undefined;
+  public onend: EventHandler | undefined;
+  public onready: EventHandler | undefined;
+  public onscript: EventHandler | undefined;
+  public onopennamespace: EventHandler | undefined;
+  public onclosenamespace: EventHandler | undefined;
   private strict: boolean;
   private opt: SAXParserOpts = {};
   private q = "";
@@ -105,7 +103,6 @@ export default class SAXParser {
   private line = 0;
   private column = 0;
   private buffers: Record<BufferType, string> = {...emptyBuffers};
-  private events: Record<ParserEvents, EventHandler | undefined> = {...emptyEvents};
   private startTagPosition = 0;
   private sawDoctype = false;
 
@@ -120,7 +117,7 @@ export default class SAXParser {
   }
 
   public emit(event: ParserEvents, data?: unknown): void {
-    const handler = this.events[event];
+    const handler = this[event];
     if (handler) handler(data);
   }
 
@@ -139,7 +136,7 @@ export default class SAXParser {
   }
 
   // eslint-disable-next-line max-lines-per-function
-  public write(rawChunk: string | null): SAXParser {
+  public write(rawChunk: string | Uint8Array | null): SAXParser {
     if (this.error) {
       throw this.error;
     }
@@ -151,13 +148,12 @@ export default class SAXParser {
     if (rawChunk === null) {
       return this.end();
     }
-    // TODO remove if useless
-    /*
-    const chunk = typeof rawChunk === "object"
-      ? rawChunk.toString()
-      : rawChunk;
-    */
-    const chunk = rawChunk;
+    let chunk;
+    if (typeof rawChunk === "string") {
+      chunk = rawChunk;
+    } else {
+      chunk = new TextDecoder().decode(rawChunk);
+    }
     let i = 0;
     while ((this.c = charAt(chunk, i++))) {
       const c = this.c;
@@ -177,6 +173,21 @@ export default class SAXParser {
     if (this.position >= this.bufferCheckPosition) {
       this.checkBufferLength();
     }
+    return this;
+  }
+
+  public end(): SAXParser {
+    if (this.sawRoot && !this.closedRoot) this.strictFail("Unclosed root tag");
+    if ((this.state !== STATE.BEGIN)
+        && (this.state !== STATE.BEGIN_WHITESPACE)
+        && (this.state !== STATE.TEXT)) {
+      this.raiseError("Unexpected end");
+    }
+    this.closeText();
+    this.c = "";
+    this.closed = true;
+    this.emit(ParserEvents.end);
+    this.fullReset();
     return this;
   }
 
@@ -206,15 +217,15 @@ export default class SAXParser {
     this.noscript = Boolean(this.strict || this.opt.noscript);
     this.state = STATE.BEGIN;
     this.strictEntities = Boolean(this.opt.strictEntities);
-    this.parserEntities = this.strictEntities
-      ? {...XML_ENTITIES}
-      : {...ENTITIES};
+    this.parserEntities = (this.strictEntities
+      ? Object.create(XML_ENTITIES)
+      : Object.create(ENTITIES)) as EntitiesList;
 
     // namespaces form a prototype chain.
     // it always points at the current tag,
     // which protos to its parent tag.
     if (this.opt.xmlns) {
-      this.namespace = {...rootNS};
+      this.namespace = Object.create(rootNS) as Namespace;
     }
 
     // mostly just for error reporting
@@ -285,21 +296,6 @@ export default class SAXParser {
     const error = new Error(erMsg);
     this.error = error;
     this.emit(ParserEvents.error, error);
-    return this;
-  }
-
-  private end() {
-    if (this.sawRoot && !this.closedRoot) this.strictFail("Unclosed root tag");
-    if ((this.state !== STATE.BEGIN)
-        && (this.state !== STATE.BEGIN_WHITESPACE)
-        && (this.state !== STATE.TEXT)) {
-      this.raiseError("Unexpected end");
-    }
-    this.closeText();
-    this.c = "";
-    this.closed = true;
-    this.emit(ParserEvents.end);
-    this.fullReset();
     return this;
   }
 
@@ -374,7 +370,7 @@ export default class SAXParser {
           const parent = this.tags[this.tags.length - 1] || this;
           if (!tag) throw new Error("Unexpected state");
           if (tag.ns === parent.ns) {
-            tag.ns = {...parent.ns};
+            tag.ns = Object.create(parent.ns ?? null) as Namespace;
           }
           if (!tag.ns) {
             tag.ns = {};
@@ -406,7 +402,7 @@ export default class SAXParser {
   }
 
   // eslint-disable-next-line complexity, max-lines-per-function
-  private openTag(selfClosing: boolean) {
+  private openTag(selfClosing = false) {
     if (this.opt.xmlns) {
       // emit namespace binding events
       const tag = this.tag;
@@ -858,45 +854,48 @@ export default class SAXParser {
     }
   }
 
-  handleProcInst() {
+  private handleProcInst() {
     if (this.c === "?") {
       this.state = STATE.PROC_INST_ENDING;
     } else if (isWhitespace(this.c)) {
       this.state = STATE.PROC_INST_BODY;
     } else {
-      this.procInstName += this.c;
+      this.buffers[BufferType.procInstName] += this.c;
     }
   }
 
-  handleProcInstBody() {
-    if (!this.procInstBody && isWhitespace(this.c)) {
+  private handleProcInstBody() {
+    if (!this.buffers[BufferType.procInstBody] && isWhitespace(this.c)) {
       return;
     }
     if (this.c === "?") {
       this.state = STATE.PROC_INST_ENDING;
     } else {
-      this.procInstBody += this.c;
+      this.buffers[BufferType.procInstBody] += this.c;
     }
   }
 
-  handleProcInstEnding() {
+  private handleProcInstEnding() {
     if (this.c === ">") {
-      this.emitNode("onprocessinginstruction", {
-        name: this.procInstName,
-        body: this.procInstBody,
-      });
-      this.procInstName = "";
-      this.procInstBody = "";
+      this.emitNode(
+        ParserEvents.processinginstruction,
+        {
+          name: this.buffers[BufferType.procInstName],
+          body: this.buffers[BufferType.procInstBody],
+        },
+      );
+      this.buffers[BufferType.procInstName] = "";
+      this.buffers[BufferType.procInstBody] = "";
       this.state = STATE.TEXT;
     } else {
-      this.procInstBody += `?${this.c}`;
+      this.buffers[BufferType.procInstBody] += `?${this.c}`;
       this.state = STATE.PROC_INST_BODY;
     }
   }
 
-  handleOpenTag() {
+  private handleOpenTag() {
     if (isMatch(nameBody, this.c)) {
-      this.tagName += this.c;
+      this.buffers[BufferType.tagName] += this.c;
     } else {
       this.newTag();
       if (this.c === ">") {
@@ -912,7 +911,7 @@ export default class SAXParser {
     }
   }
 
-  handleOpenTagSlash() {
+  private handleOpenTagSlash() {
     if (this.c === ">") {
       this.openTag(true);
       this.closeTag();
@@ -922,7 +921,7 @@ export default class SAXParser {
     }
   }
 
-  handleAttrib() {
+  private handleAttrib() {
     // haven't read the attribute name yet.
     if (isWhitespace(this.c)) {
       return;
@@ -932,47 +931,51 @@ export default class SAXParser {
     } else if (this.c === "/") {
       this.state = STATE.OPEN_TAG_SLASH;
     } else if (isMatch(nameStart, this.c)) {
-      this.attribName = this.c;
-      this.attribValue = "";
+      this.buffers[BufferType.attribName] = this.c;
+      this.buffers[BufferType.attribValue] = "";
       this.state = STATE.ATTRIB_NAME;
     } else {
       this.strictFail("Invalid attribute name");
     }
   }
 
-  handleAttribName() {
+  private handleAttribName() {
     if (this.c === "=") {
       this.state = STATE.ATTRIB_VALUE;
     } else if (this.c === ">") {
       this.strictFail("Attribute without value");
-      this.attribValue = this.attribName;
+      this.buffers[BufferType.attribValue] = this.buffers[BufferType.attribName];
       this.attrib();
       this.openTag();
     } else if (isWhitespace(this.c)) {
       this.state = STATE.ATTRIB_NAME_SAW_WHITE;
     } else if (isMatch(nameBody, this.c)) {
-      this.attribName += this.c;
+      this.buffers[BufferType.attribName] += this.c;
     } else {
       this.strictFail("Invalid attribute name");
     }
   }
 
-  handleAttribNameSawWhite() {
+  private handleAttribNameSawWhite() {
     if (this.c === "=") {
       this.state = STATE.ATTRIB_VALUE;
     } else if (!isWhitespace(this.c)) {
       this.strictFail("Attribute without value");
-      this.tag.attributes[this.attribName] = "";
-      this.attribValue = "";
-      this.emitNode("onattribute", {
-        name: this.attribName,
-        value: "",
-      });
-      this.attribName = "";
+      if (!this.tag) throw new Error("Unexpected state");
+      this.tag.attributes[this.buffers[BufferType.attribName]] = "";
+      this.buffers[BufferType.attribValue] = "";
+      this.emitNode(
+        ParserEvents.attribute,
+        {
+          name: this.buffers[BufferType.attribName],
+          value: "",
+        },
+      );
+      this.buffers[BufferType.attribName] = "";
       if (this.c === ">") {
         this.openTag();
       } else if (isMatch(nameStart, this.c)) {
-        this.attribName = this.c;
+        this.buffers[BufferType.attribName] = this.c;
         this.state = STATE.ATTRIB_NAME;
       } else {
         this.strictFail("Invalid attribute name");
@@ -981,7 +984,7 @@ export default class SAXParser {
     }
   }
 
-  handleAttribValue() {
+  private handleAttribValue() {
     if (isWhitespace(this.c)) {
       return;
     }
@@ -991,16 +994,16 @@ export default class SAXParser {
     } else {
       this.strictFail("Unquoted attribute value");
       this.state = STATE.ATTRIB_VALUE_UNQUOTED;
-      this.attribValue = this.c;
+      this.buffers[BufferType.attribValue] = this.c;
     }
   }
 
-  handleAttribValueQuoted() {
+  private handleAttribValueQuoted() {
     if (this.c !== this.q) {
       if (this.c === "&") {
         this.state = STATE.ATTRIB_VALUE_ENTITY_Q;
       } else {
-        this.attribValue += this.c;
+        this.buffers[BufferType.attribValue] += this.c;
       }
       return;
     }
@@ -1009,7 +1012,7 @@ export default class SAXParser {
     this.state = STATE.ATTRIB_VALUE_CLOSED;
   }
 
-  handleAttribValueClosed() {
+  private handleAttribValueClosed() {
     if (isWhitespace(this.c)) {
       this.state = STATE.ATTRIB;
     } else if (this.c === ">") {
@@ -1018,20 +1021,20 @@ export default class SAXParser {
       this.state = STATE.OPEN_TAG_SLASH;
     } else if (isMatch(nameStart, this.c)) {
       this.strictFail("No whitespace between attributes");
-      this.attribName = this.c;
-      this.attribValue = "";
+      this.buffers[BufferType.attribName] = this.c;
+      this.buffers[BufferType.attribValue] = "";
       this.state = STATE.ATTRIB_NAME;
     } else {
       this.strictFail("Invalid attribute name");
     }
   }
 
-  handleAttribValueUnquoted() {
+  private handleAttribValueUnquoted() {
     if (!isAttribEnd(this.c)) {
       if (this.c === "&") {
         this.state = STATE.ATTRIB_VALUE_ENTITY_U;
       } else {
-        this.attribValue += this.c;
+        this.buffers[BufferType.attribValue] += this.c;
       }
       return;
     }
@@ -1043,28 +1046,28 @@ export default class SAXParser {
     }
   }
 
-  handleCloseTag() {
-    if (!this.tagName) {
+  private handleCloseTag() {
+    if (!this.buffers[BufferType.tagName]) {
       if (isWhitespace(this.c)) {
         return;
       }
       if (notMatch(nameStart, this.c)) {
-        if (this.script) {
-          this.script += `</${this.c}`;
+        if (this.buffers[BufferType.script]) {
+          this.buffers[BufferType.script] += `</${this.c}`;
           this.state = STATE.SCRIPT;
         } else {
           this.strictFail("Invalid tagname in closing tag.");
         }
       } else {
-        this.tagName = this.c;
+        this.buffers[BufferType.tagName] = this.c;
       }
     } else if (this.c === ">") {
       this.closeTag();
     } else if (isMatch(nameBody, this.c)) {
-      this.tagName += this.c;
-    } else if (this.script) {
-      this.script += `</${this.tagName}`;
-      this.tagName = "";
+      this.buffers[BufferType.tagName] += this.c;
+    } else if (this.buffers[BufferType.script]) {
+      this.buffers[BufferType.script] += `</${this.buffers[BufferType.tagName]}`;
+      this.buffers[BufferType.tagName] = "";
       this.state = STATE.SCRIPT;
     } else {
       if (!isWhitespace(this.c)) {
@@ -1074,7 +1077,7 @@ export default class SAXParser {
     }
   }
 
-  handleCloseTagSawWhite() {
+  private handleCloseTagSawWhite() {
     if (isWhitespace(this.c)) {
       return;
     }
@@ -1085,36 +1088,38 @@ export default class SAXParser {
     }
   }
 
-  handleTextEntity() {
+  private handleTextEntity() {
     let returnState;
     let buffer;
     switch (this.state) {
       case STATE.TEXT_ENTITY:
         returnState = STATE.TEXT;
-        buffer = "textNode";
+        buffer = BufferType.textNode;
         break;
 
       case STATE.ATTRIB_VALUE_ENTITY_Q:
         returnState = STATE.ATTRIB_VALUE_QUOTED;
-        buffer = "attribValue";
+        buffer = BufferType.attribValue;
         break;
 
       case STATE.ATTRIB_VALUE_ENTITY_U:
         returnState = STATE.ATTRIB_VALUE_UNQUOTED;
-        buffer = "attribValue";
+        buffer = BufferType.attribValue;
         break;
+      default:
+        throw new Error("Unexpected state");
     }
 
     if (this.c === ";") {
-      this[buffer] += this.parseEntity();
-      this.entity = "";
+      this.buffers[buffer] += this.parseEntity();
+      this.buffers[BufferType.entity] = "";
       this.state = returnState;
-    } else if (isMatch(this.entity.length ? entityBody : entityStart, this.c)) {
-      this.entity += this.c;
+    } else if (isMatch(this.buffers[BufferType.entity].length ? entityBody : entityStart, this.c)) {
+      this.buffers[BufferType.entity] += this.c;
     } else {
       this.strictFail("Invalid character in entity name");
-      this[buffer] += `&${this.entity}${this.c}`;
-      this.entity = "";
+      this.buffers[buffer] += `&${this.buffers[BufferType.entity]}${this.c}`;
+      this.buffers[BufferType.entity] = "";
       this.state = returnState;
     }
   }

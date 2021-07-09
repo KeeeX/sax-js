@@ -1,5 +1,5 @@
+/node_modules
+/.nyc_output
+/*.tgz
+/.tsbuildinfo
 .*.swp
-node_modules/*
-nyc_output/
-.nyc_output/
-coverage/

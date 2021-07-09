@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-magic-numbers */
 
-import {EntitiesList, Namespace} from "./types";
+import {EntitiesBaseList, EntitiesList, EventHandler, Namespace} from "./types";
 
 // When we pass the MAX_BUFFER_LENGTH position, start checking for buffer overruns.
 // When we check, schedule the next check for MAX_BUFFER_LENGTH - (max(buffer lengths)),
@@ -50,6 +50,27 @@ export enum StreamEvents {
   closenamespace = "onclosenamespace",
 }
 
+export interface StreamEventsInterface {
+  ontext: Array<EventHandler>;
+  onprocessinginstruction: Array<EventHandler>;
+  onsgmldeclaration: Array<EventHandler>;
+  ondoctype: Array<EventHandler>;
+  oncomment: Array<EventHandler>;
+  onopentagstart: Array<EventHandler>;
+  onattribute: Array<EventHandler>;
+  onopentag: Array<EventHandler>;
+  onclosetag: Array<EventHandler>;
+  onopencdata: Array<EventHandler>;
+  oncdata: Array<EventHandler>;
+  onclosecdata: Array<EventHandler>;
+  onready: Array<EventHandler>;
+  onscript: Array<EventHandler>;
+  onopennamespace: Array<EventHandler>;
+  onclosenamespace: Array<EventHandler>;
+  onerror: Array<EventHandler>;
+  onend: Array<EventHandler>;
+}
+
 export enum ParserEvents {
   text = "ontext",
   processinginstruction = "onprocessinginstruction",
@@ -69,6 +90,27 @@ export enum ParserEvents {
   script = "onscript",
   opennamespace = "onopennamespace",
   closenamespace = "onclosenamespace",
+}
+
+export interface ParserEventsInterface {
+  ontext: EventHandler | undefined;
+  onprocessinginstruction: EventHandler | undefined;
+  onsgmldeclaration: EventHandler | undefined;
+  ondoctype: EventHandler | undefined;
+  oncomment: EventHandler | undefined;
+  onopentagstart: EventHandler | undefined;
+  onattribute: EventHandler | undefined;
+  onopentag: EventHandler | undefined;
+  onclosetag: EventHandler | undefined;
+  onopencdata: EventHandler | undefined;
+  oncdata: EventHandler | undefined;
+  onclosecdata: EventHandler | undefined;
+  onerror: EventHandler | undefined;
+  onend: EventHandler | undefined;
+  onready: EventHandler | undefined;
+  onscript: EventHandler | undefined;
+  onopennamespace: EventHandler | undefined;
+  onclosenamespace: EventHandler | undefined;
 }
 
 let S = 0;
@@ -119,7 +161,7 @@ export const XML_ENTITIES: EntitiesList = {
   "apos": "'",
 };
 
-export const ENTITIES: EntitiesList = {
+export const entitiesBase: EntitiesBaseList = {
   "amp": "&",
   "gt": ">",
   "lt": "<",
@@ -375,11 +417,15 @@ export const ENTITIES: EntitiesList = {
   "diams": 9830,
 };
 
-Object.keys(ENTITIES).forEach(key => {
-  const e = ENTITIES[key];
-  const s = typeof e === "number" ? String.fromCharCode(e) : e;
-  ENTITIES[key] = s;
-});
+export const ENTITIES = Object.keys(entitiesBase).reduce<EntitiesList>(
+  (acc, key) => {
+    const e = entitiesBase[key];
+    const s = typeof e === "number" ? String.fromCharCode(e) : e;
+    acc[key] = s;
+    return acc;
+  },
+  {},
+);
 
 for (const s of Object.keys(STATE)) {
   STATE[STATE[s]] = s;
