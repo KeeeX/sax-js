@@ -8,20 +8,19 @@
       "email": "gabriel@keeex.net"
     }
   ],
-  "version": "2.0.1",
+  "version": "2.1.1",
   "main": "lib/sax.js",
   "license": "ISC",
   "scripts": {
-    "test": "tap test/*.js",
-    "posttest": "npm exec eslint ."
+    "test": "npm exec tap test/*.js",
+    "pretest": "npm exec tsc",
+    "posttest": "npm exec eslint .",
+    "prepack": "npm exec tsc"
   },
   "repository": "git://github.com/isaacs/sax-js.git",
   "files": [
-    "lib/sax.js",
-    "lib/consts.js",
-    "lib/saxparser.js",
-    "lib/saxstream.js",
-    "lib/utils.js"
+    "lib/*.js",
+    "lib/*.d.ts"
   ],
   "tap": {
     "check-coverage": true,
@@ -32,10 +31,17 @@
   },
   "devDependencies": {
     "@keeex/eslint-config": "^1.5.1",
+    "@types/node": "^16.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
     "eslint": "^7.30.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-promise": "^5.1.0",
-    "tap": "^15.0.9"
+    "tap": "^15.0.9",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "string_decoder": "^1.3.0"
   },
   "publishConfig": {
     "access": "public"
