@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 // unquoted attributes should be ok in non-strict mode
 // https://github.com/isaacs/sax-js/issues/31

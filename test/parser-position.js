@@ -1,5 +1,5 @@
-const tap = require("tap");
-const sax = require("../lib/sax.js");
+import tap from "tap";
+import * as sax from "../lib/sax.js";
 
 const testPosition = (chunks, expectedEvents) => {
   const parser = sax.parser();

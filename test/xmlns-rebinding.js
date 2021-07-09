@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 tests.test({
   xml: "<root xmlns:x=\"x1\" xmlns:y=\"y1\" x:a=\"x1\" y:a=\"y1\">"

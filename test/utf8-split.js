@@ -1,6 +1,8 @@
 /* eslint-disable no-magic-numbers */
-const tap = require("tap");
-const saxStream = require("../lib/sax.js").createStream();
+import tap from "tap";
+import {createStream} from "../lib/sax.js";
+
+const saxStream = createStream();
 
 const b = Buffer.from("误");
 
@@ -20,7 +22,7 @@ saxStream.write(Buffer.from("</c>"));
 saxStream.write(Buffer.concat([Buffer.from("<d>"), b.slice(0, 1)]));
 saxStream.end(Buffer.concat([b.slice(1), Buffer.from("</d></test>")]));
 
-const saxStream2 = require("../lib/sax.js").createStream();
+const saxStream2 = createStream();
 
 saxStream2.on("text", text => {
   tap.equal(text, "�");

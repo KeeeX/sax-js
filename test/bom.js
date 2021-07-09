@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 // BOM at the very begining of the stream should be ignored
 tests.test({

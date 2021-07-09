@@ -1,5 +1,5 @@
-const {ENTITIES} = require("../lib/consts.js");
-const tests = require("./index.js");
+import {ENTITIES} from "../lib/consts.js";
+import tests from "./index.js";
 
 let xml = "<r>";
 let text = "";

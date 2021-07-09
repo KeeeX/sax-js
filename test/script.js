@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 tests.test({
   xml: "<html><head><script>if (1 < 0) { console.log('elo there'); }</script></head></html>",

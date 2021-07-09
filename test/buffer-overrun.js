@@ -1,5 +1,5 @@
 // set this really low so that I don't have to put 64 MB of xml in here.
-const tests = require("./index.js");
+import tests from "./index.js";
 
 tests.test({
   opt: {maxBufferLength: 5},

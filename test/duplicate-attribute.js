@@ -1,4 +1,4 @@
-const tests = require("./index.js");
+import tests from "./index.js";
 
 tests.test({
   xml: "<span id=\"hello\" id=\"there\"></span>",

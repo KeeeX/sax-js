@@ -1,8 +1,10 @@
 {
   "files.exclude": {
     ".nyc_output": true,
+    ".tsbuildinfo": true,
     ".vscode": true,
     "coverage": true,
+    "lib": true,
     "node_modules": true
   }
 }
