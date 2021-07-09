@@ -2,4 +2,5 @@
 /.nyc_output
 /*.tgz
 /.tsbuildinfo
+/lib
 .*.swp
