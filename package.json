@@ -8,7 +8,7 @@
       "email": "gabriel@keeex.net"
     }
   ],
-  "version": "3.0.0",
+  "version": "3.0.2",
   "type": "module",
   "main": "lib/sax.js",
   "license": "ISC",
@@ -41,9 +41,6 @@
     "eslint-plugin-promise": "^5.1.0",
     "tap": "^15.0.9",
     "typescript": "^4.3.5"
-  },
-  "dependencies": {
-    "string_decoder": "^1.3.0"
   },
   "publishConfig": {
     "access": "public"

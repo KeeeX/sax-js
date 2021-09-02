@@ -1,7 +1,7 @@
-import {StringDecoder} from "string_decoder";
 import {ParserEvents, ParserEventsInterface, StreamEvents, StreamEventsInterface} from "./consts.js";
 import SAXParser, {SAXParserOpts} from "./saxparser.js";
 import {EventHandler} from "./types.js";
+import {StringDecoder} from "./string_decoder.js";
 
 export default class SAXStream implements ParserEventsInterface {
   public onerror: EventHandler | undefined;
@@ -172,20 +172,13 @@ export default class SAXStream implements ParserEventsInterface {
     let effectiveData;
     if (typeof data === "string") {
       effectiveData = data;
-    } else if (
-      typeof Buffer === "function"
-        && typeof Buffer.isBuffer === "function"
-        && Buffer.isBuffer(data)
-    ) {
+    } else {
       if (!this._decoder) {
         this._decoder = new StringDecoder();
       }
       effectiveData = this._decoder.write(data);
-    } else {
-      effectiveData = data.toString();
     }
     this._parser.write(effectiveData);
-    // this.emit(.data, effectiveData);
     return true;
   }
 
