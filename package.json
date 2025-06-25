@@ -154,7 +154,8 @@
       "ignoreDependencies": [
         "@babel/plugin-syntax-import-attributes"
       ]
-    }
+    },
+    "typedoc": false
   },
   "type": "module",
   "version": "3.1.0",
