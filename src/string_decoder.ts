@@ -49,10 +49,7 @@ const _normalizeEncoding = (encInput: string): string | undefined => {
 // modules monkey-patch it to support additional encodings
 const normalizeEncoding = (enc: string): string => {
   const normalizedEncoding = _normalizeEncoding(enc);
-  if (
-    normalizedEncoding
-    && isEncoding(normalizedEncoding)
-  ) {
+  if (normalizedEncoding && isEncoding(normalizedEncoding)) {
     return normalizedEncoding;
   }
   throw new Error(`Unknown encoding: ${enc}`);
@@ -62,11 +59,11 @@ const normalizeEncoding = (enc: string): string => {
 // buffers into a series of JS strings without breaking apart multi-byte
 // characters.
 export class StringDecoder {
-  private _encoding: string;
+  private readonly _encoding: string;
   private lastNeed = 0;
   private lastTotal = 0;
-  private lastChar: Uint8Array;
-  private decoder = new TextDecoder();
+  private readonly lastChar: Uint8Array;
+  private readonly decoder = new TextDecoder();
 
   public constructor(encoding = "utf8") {
     this._encoding = normalizeEncoding(encoding);
@@ -80,13 +77,13 @@ export class StringDecoder {
    */
   private static utf8CheckByte(byte: number): number {
     /* eslint-disable @typescript-eslint/no-magic-numbers */
-    if (byte <= 0x7F) {
+    if (byte <= 0x7f) {
       return 0;
     } else if (byte >> 5 === 0x06) {
       return 2;
-    } else if (byte >> 4 === 0x0E) {
+    } else if (byte >> 4 === 0x0e) {
       return 3;
-    } else if (byte >> 3 === 0x1E) {
+    } else if (byte >> 3 === 0x1e) {
       return 4;
     }
     return byte >> 6 === 0x02 ? -1 : -2;
@@ -99,8 +96,10 @@ export class StringDecoder {
 
   public write(inputBuffer: Uint8Array): string {
     if (inputBuffer.length === 0) return "";
+    /* eslint-disable @typescript-eslint/init-declarations */
     let r;
     let i;
+    /* eslint-enable @typescript-eslint/init-declarations */
     if (this.lastNeed) {
       r = this.fillLast(inputBuffer);
       if (r === undefined) return "";
@@ -110,9 +109,7 @@ export class StringDecoder {
       i = 0;
     }
     if (i < inputBuffer.length) {
-      return r
-        ? r + this.utf8Text(inputBuffer, i)
-        : this.utf8Text(inputBuffer, i);
+      return r ? r + this.utf8Text(inputBuffer, i) : this.utf8Text(inputBuffer, i);
     }
     return r ?? "";
   }
@@ -122,7 +119,7 @@ export class StringDecoder {
   }
 
   /** Attempts to complete a partial non-UTF-8 character using bytes from an Uint8Array */
-  private fillLast(inputBuffer: Uint8Array) {
+  private fillLast(inputBuffer: Uint8Array): string | undefined {
     const p = this.lastTotal - this.lastNeed;
     const r = this.utf8CheckExtraBytes(inputBuffer);
     if (r !== undefined) return r;
@@ -138,25 +135,25 @@ export class StringDecoder {
    * Validates as many continuation bytes for a multi-byte UTF-8 character as
    * needed or are available. If we see a non-continuation byte where we expect
    * one, we "replace" the validated continuation bytes we've seen so far with
-   * a single UTF-8 replacement character ('\ufffd'), to match v8's UTF-8 decoding
+   * a single UTF-8 replacement character ('\\ufffd'), to match v8's UTF-8 decoding
    * behavior. The continuation byte check is included three times in the case
    * where all of the continuation bytes for a character exist in the same buffer.
    * It is also done this way as a slight performance increase instead of using a
    * loop.
    */
-  private utf8CheckExtraBytes(inputBuffer: Uint8Array) {
+  private utf8CheckExtraBytes(inputBuffer: Uint8Array): string | undefined {
     /* eslint-disable @typescript-eslint/no-magic-numbers */
-    if ((inputBuffer[0] & 0xC0) !== 0x80) {
+    if ((inputBuffer[0] & 0xc0) !== 0x80) {
       this.lastNeed = 0;
       return "\ufffd";
     }
     if (this.lastNeed > 1 && inputBuffer.length > 1) {
-      if ((inputBuffer[1] & 0xC0) !== 0x80) {
+      if ((inputBuffer[1] & 0xc0) !== 0x80) {
         this.lastNeed = 1;
         return "\ufffd";
       }
       if (this.lastNeed > 2 && inputBuffer.length > 2) {
-        if ((inputBuffer[2] & 0xC0) !== 0x80) {
+        if ((inputBuffer[2] & 0xc0) !== 0x80) {
           this.lastNeed = 2;
           return "\ufffd";
         }
@@ -170,7 +167,7 @@ export class StringDecoder {
    * incomplete multi-byte UTF-8 character. The total number of bytes (2, 3, or 4)
    * needed to complete the UTF-8 character (if applicable) are returned.
    */
-  private utf8CheckIncomplete(inputBuffer: Uint8Array, i: number) {
+  private utf8CheckIncomplete(inputBuffer: Uint8Array, i: number): number {
     /* eslint-disable @typescript-eslint/no-magic-numbers */
     let j = inputBuffer.length - 1;
     if (j < i) return 0;

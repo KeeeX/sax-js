@@ -1,40 +1,45 @@
-import {ParserEvents, ParserEventsInterface, StreamEvents, StreamEventsInterface} from "./consts.js";
+import {
+  ParserEvents,
+  ParserEventsInterface,
+  StreamEvents,
+  StreamEventsInterface,
+} from "./consts.js";
 import SAXParser, {SAXParserOpts} from "./saxparser.js";
-import {EventHandler} from "./types.js";
 import {StringDecoder} from "./string_decoder.js";
+import {EventHandler} from "./types.js";
 
 export default class SAXStream implements ParserEventsInterface {
   public onerror: EventHandler | undefined;
   public onend: EventHandler | undefined;
   private _parser: SAXParser;
   private _decoder: StringDecoder | undefined;
-  private events: StreamEventsInterface = {
-    ontext: [],
-    onprocessinginstruction: [],
-    onsgmldeclaration: [],
-    ondoctype: [],
-    oncomment: [],
-    onopentagstart: [],
+  private readonly events: StreamEventsInterface = {
     onattribute: [],
-    onopentag: [],
-    onclosetag: [],
-    onopencdata: [],
     oncdata: [],
     onclosecdata: [],
+    onclosenamespace: [],
+    onclosetag: [],
+    oncomment: [],
+    ondoctype: [],
+    onend: [],
+    onerror: [],
+    onopencdata: [],
+    onopennamespace: [],
+    onopentag: [],
+    onopentagstart: [],
+    onprocessinginstruction: [],
     onready: [],
     onscript: [],
-    onopennamespace: [],
-    onclosenamespace: [],
-    onerror: [],
-    onend: [],
+    onsgmldeclaration: [],
+    ontext: [],
   };
 
   public constructor(strict = false, opt: SAXParserOpts = {}) {
     this._parser = new SAXParser(strict, opt);
-    this._parser.onend = () => {
+    this._parser.onend = (): void => {
       this.emit(ParserEvents.end);
     };
-    this._parser.onerror = err => {
+    this._parser.onerror = (err): void => {
       this.emit(ParserEvents.error, err);
       this._parser.resume();
     };
@@ -169,13 +174,12 @@ export default class SAXStream implements ParserEventsInterface {
   }
 
   public write(data: string | Uint8Array): boolean {
+    /* eslint-disable-next-line @typescript-eslint/init-declarations */
     let effectiveData;
     if (typeof data === "string") {
       effectiveData = data;
     } else {
-      if (!this._decoder) {
-        this._decoder = new StringDecoder();
-      }
+      this._decoder ??= new StringDecoder();
       effectiveData = this._decoder.write(data);
     }
     this._parser.write(effectiveData);
@@ -191,21 +195,22 @@ export default class SAXStream implements ParserEventsInterface {
   }
 
   public on(ev: string, handler: EventHandler): void {
+    /* eslint-disable-next-line @typescript-eslint/init-declarations */
     let eventName;
     if (ev.startsWith("on")) {
       eventName = ev;
     } else {
       eventName = `on${ev}`;
     }
-    if (Object.values(ParserEvents).indexOf(eventName as ParserEvents) === -1) {
+    if (!Object.values(ParserEvents).includes(eventName as ParserEvents)) {
       throw new Error("Unknown event");
     }
     const parserEvent = eventName as ParserEvents;
     if (
-      !this._parser[parserEvent]
-      && Object.values(StreamEvents).indexOf(parserEvent as unknown as StreamEvents) !== -1
+      !this._parser[parserEvent] &&
+      Object.values(StreamEvents).includes(parserEvent as unknown as StreamEvents)
     ) {
-      this._parser[parserEvent] = (...rest) => {
+      this._parser[parserEvent] = (...rest): void => {
         this.emit(parserEvent, ...rest);
       };
     }

@@ -1,0 +1,64 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "\n"
+    },
+    {
+      "eventType": "comment",
+      "value": " \n  comment with a single dash- in it\n"
+    },
+    {
+      "eventType": "text",
+      "value": "\n"
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "data"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": true,
+        "name": "data"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "data"
+    },
+    {
+      "eventType": "text",
+      "value": "\n"
+    },
+    {
+      "eventType": "closetag",
+      "value": "xml"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

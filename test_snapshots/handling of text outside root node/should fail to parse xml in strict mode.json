@@ -1,0 +1,53 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "root"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "root"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "abc"
+    },
+    {
+      "eventType": "closetag",
+      "value": "root"
+    },
+    {
+      "eventType": "error",
+      "value": "Text data outside of root node.\nLine: 0\nColumn: 17\nChar: d"
+    },
+    {
+      "eventType": "text",
+      "value": "d"
+    },
+    {
+      "eventType": "error",
+      "value": "Text data outside of root node.\nLine: 0\nColumn: 18\nChar: e"
+    },
+    {
+      "eventType": "text",
+      "value": "e"
+    },
+    {
+      "eventType": "error",
+      "value": "Unexpected end\nLine: 0\nColumn: 20\nChar: "
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

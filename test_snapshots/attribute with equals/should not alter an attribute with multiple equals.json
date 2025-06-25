@@ -1,0 +1,38 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "A"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "HREF",
+        "value": "query.svc?x=1&y=2&z=3"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "HREF": "query.svc?x=1&y=2&z=3"
+        },
+        "isSelfClosing": true,
+        "name": "A"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "A"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

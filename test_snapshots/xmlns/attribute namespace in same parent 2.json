@@ -1,0 +1,85 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "parent",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "a",
+        "uri": "http://ATTRIBUTE"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "a:attr",
+        "prefix": "a",
+        "uri": "http://ATTRIBUTE",
+        "value": "value"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "xmlns:a",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "http://ATTRIBUTE"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "a:attr": {
+            "local": "attr",
+            "name": "a:attr",
+            "prefix": "a",
+            "uri": "http://ATTRIBUTE",
+            "value": "value"
+          },
+          "xmlns:a": {
+            "local": "a",
+            "name": "xmlns:a",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "http://ATTRIBUTE"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "parent",
+        "name": "parent",
+        "ns": {
+          "a": "http://ATTRIBUTE"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "parent"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "a",
+        "uri": "http://ATTRIBUTE"
+      }
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

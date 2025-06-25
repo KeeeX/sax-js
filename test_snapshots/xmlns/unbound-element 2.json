@@ -1,0 +1,62 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "unbound:root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "unbound",
+        "uri": "someuri"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "unbound",
+        "name": "xmlns:unbound",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "someuri"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "xmlns:unbound": {
+            "local": "unbound",
+            "name": "xmlns:unbound",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "someuri"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "root",
+        "name": "unbound:root",
+        "ns": {
+          "unbound": "someuri"
+        },
+        "prefix": "unbound",
+        "uri": "someuri"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "unbound:root"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "unbound",
+        "uri": "someuri"
+      }
+    }
+  ]
+}

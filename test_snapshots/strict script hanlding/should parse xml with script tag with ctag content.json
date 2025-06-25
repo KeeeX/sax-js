@@ -1,0 +1,58 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "script"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "script"
+      }
+    },
+    {
+      "eventType": "opencdata"
+    },
+    {
+      "eventType": "cdata",
+      "value": "hello world"
+    },
+    {
+      "eventType": "closecdata"
+    },
+    {
+      "eventType": "closetag",
+      "value": "script"
+    },
+    {
+      "eventType": "closetag",
+      "value": "xml"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

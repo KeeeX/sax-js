@@ -1,0 +1,51 @@
+{
+  "entry": [
+    "src/tests/attribute-name.test.ts",
+    "src/tests/attribute-no-space.test.ts",
+    "src/tests/attribute-unquoted.test.ts",
+    "src/tests/attribute-with-equals.test.ts",
+    "src/tests/bom.test.ts",
+    "src/tests/buffer-overrun.test.ts",
+    "src/tests/case.test.ts",
+    "src/tests/cdata-chunked.test.ts",
+    "src/tests/cdata-fake-end.test.ts",
+    "src/tests/cdata-multiple.test.ts",
+    "src/tests/cdata.test.ts",
+    "src/tests/cyrillic.test.ts",
+    "src/tests/duplicate-attribute.test.ts",
+    "src/tests/emoji.test.ts",
+    "src/tests/end-empty-stream.test.ts",
+    "src/tests/entities.test.ts",
+    "src/tests/entity-mega.test.ts",
+    "src/tests/entity-nan.test.ts",
+    "src/tests/entity-with-leading-0.test.ts",
+    "src/tests/flush.test.ts",
+    "src/tests/handling-of-text-outside-root-node.test.ts",
+    "src/tests/not-string.test.ts",
+    "src/tests/opentagstart.test.ts",
+    "src/tests/parser-position.test.ts",
+    "src/tests/script-close-better.test.ts",
+    "src/tests/script.test.ts",
+    "src/tests/self-closing.test.ts",
+    "src/tests/single-dash-in-comment.test.ts",
+    "src/tests/stand-alone-comment.test.ts",
+    "src/tests/stray-ending.test.ts",
+    "src/tests/strict-script-handling.test.ts",
+    "src/tests/trailing-attribute-no-value.test.ts",
+    "src/tests/trailing-non-whitespace.test.ts",
+    "src/tests/unbalanced-quote-in-processing-instruction.test.ts",
+    "src/tests/unclosed-root.test.ts",
+    "src/tests/unquoted.test.ts",
+    "src/tests/utf8-split.test.ts",
+    "src/tests/utils.ts",
+    "src/tests/xml-internal-entities.test.ts",
+    "src/tests/xmlns.test.ts"
+  ],
+  "ignoreBinaries": [],
+  "ignoreDependencies": [
+    "@babel/plugin-syntax-import-attributes"
+  ],
+  "rules": {
+    "duplicates": "off"
+  }
+}

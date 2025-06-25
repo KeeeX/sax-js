@@ -1,0 +1,45 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "position": 5,
+      "startTagPosition": 1,
+      "value": {
+        "attributes": {},
+        "name": "DIV"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "position": 5,
+      "startTagPosition": 1,
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "DIV"
+      }
+    },
+    {
+      "eventType": "text",
+      "position": 19,
+      "startTagPosition": 14,
+      "value": "abcdefgh"
+    },
+    {
+      "eventType": "closetag",
+      "position": 19,
+      "startTagPosition": 14,
+      "value": "DIV"
+    },
+    {
+      "eventType": "end",
+      "position": 19,
+      "startTagPosition": 14
+    },
+    {
+      "eventType": "ready",
+      "position": 0,
+      "startTagPosition": 0
+    }
+  ]
+}

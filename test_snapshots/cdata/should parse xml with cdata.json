@@ -1,0 +1,39 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "R"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "R"
+      }
+    },
+    {
+      "eventType": "opencdata"
+    },
+    {
+      "eventType": "cdata",
+      "value": " this is character data  "
+    },
+    {
+      "eventType": "closecdata"
+    },
+    {
+      "eventType": "closetag",
+      "value": "R"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

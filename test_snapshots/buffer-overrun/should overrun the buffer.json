@@ -1,0 +1,45 @@
+{
+  "snapshot": [
+    {
+      "eventType": "error",
+      "value": "Max buffer length exceeded: tagName\nLine: 0\nColumn: 15\nChar: "
+    },
+    {
+      "eventType": "error",
+      "value": "Max buffer length exceeded: tagName\nLine: 0\nColumn: 30\nChar: "
+    },
+    {
+      "eventType": "error",
+      "value": "Max buffer length exceeded: tagName\nLine: 0\nColumn: 45\nChar: "
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "yo"
+    },
+    {
+      "eventType": "closetag",
+      "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

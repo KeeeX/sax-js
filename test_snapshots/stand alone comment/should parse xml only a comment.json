@@ -1,0 +1,14 @@
+{
+  "snapshot": [
+    {
+      "eventType": "comment",
+      "value": " stand alone comment "
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

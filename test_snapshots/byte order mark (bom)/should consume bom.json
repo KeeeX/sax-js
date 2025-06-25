@@ -1,0 +1,42 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "P"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "BOM",
+        "value": "﻿"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "BOM": "﻿"
+        },
+        "isSelfClosing": false,
+        "name": "P"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "﻿Starts and ends with BOM﻿"
+    },
+    {
+      "eventType": "closetag",
+      "value": "P"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

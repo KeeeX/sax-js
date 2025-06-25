@@ -1,0 +1,46 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "SPAN"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "CLASS",
+        "value": "test"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "HELLO",
+        "value": "world"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "CLASS": "test",
+          "HELLO": "world"
+        },
+        "isSelfClosing": false,
+        "name": "SPAN"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "SPAN"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

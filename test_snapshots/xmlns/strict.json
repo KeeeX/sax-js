@@ -1,0 +1,330 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "local": "root",
+        "name": "root",
+        "ns": {},
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "plain",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "attr",
+        "prefix": "",
+        "uri": "",
+        "value": "normal"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "attr": {
+            "local": "attr",
+            "name": "attr",
+            "prefix": "",
+            "uri": "",
+            "value": "normal"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "plain",
+        "name": "plain",
+        "ns": {},
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "plain"
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "ns1",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "",
+        "uri": "uri:default"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "",
+        "name": "xmlns",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "uri:default"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "xmlns": {
+            "local": "",
+            "name": "xmlns",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "uri:default"
+          }
+        },
+        "isSelfClosing": false,
+        "local": "ns1",
+        "name": "ns1",
+        "ns": {
+          "": "uri:default"
+        },
+        "prefix": "",
+        "uri": "uri:default"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "plain",
+        "ns": {
+          "": "uri:default"
+        }
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "attr",
+        "prefix": "",
+        "uri": "",
+        "value": "normal"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "attr": {
+            "local": "attr",
+            "name": "attr",
+            "prefix": "",
+            "uri": "",
+            "value": "normal"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "plain",
+        "name": "plain",
+        "ns": {
+          "": "uri:default"
+        },
+        "prefix": "",
+        "uri": "uri:default"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "plain"
+    },
+    {
+      "eventType": "closetag",
+      "value": "ns1"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "",
+        "uri": "uri:default"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "ns2",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "a",
+        "uri": "uri:nsa"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "xmlns:a",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "uri:nsa"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "xmlns:a": {
+            "local": "a",
+            "name": "xmlns:a",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "uri:nsa"
+          }
+        },
+        "isSelfClosing": false,
+        "local": "ns2",
+        "name": "ns2",
+        "ns": {
+          "a": "uri:nsa"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "plain",
+        "ns": {
+          "a": "uri:nsa"
+        }
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "attr",
+        "prefix": "",
+        "uri": "",
+        "value": "normal"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "attr": {
+            "local": "attr",
+            "name": "attr",
+            "prefix": "",
+            "uri": "",
+            "value": "normal"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "plain",
+        "name": "plain",
+        "ns": {
+          "a": "uri:nsa"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "plain"
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "a:ns",
+        "ns": {
+          "a": "uri:nsa"
+        }
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "a:attr",
+        "prefix": "a",
+        "uri": "uri:nsa",
+        "value": "namespaced"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "a:attr": {
+            "local": "attr",
+            "name": "a:attr",
+            "prefix": "a",
+            "uri": "uri:nsa",
+            "value": "namespaced"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "ns",
+        "name": "a:ns",
+        "ns": {
+          "a": "uri:nsa"
+        },
+        "prefix": "a",
+        "uri": "uri:nsa"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "a:ns"
+    },
+    {
+      "eventType": "closetag",
+      "value": "ns2"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "a",
+        "uri": "uri:nsa"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "root"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "\r\r\n"
+    },
+    {
+      "eventType": "closetag",
+      "value": "xml"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

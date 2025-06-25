@@ -1,34 +1,125 @@
 {
-  "name": "@keeex/sax",
-  "description": "An evented streaming XML parser in JavaScript",
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
+  "cleanPublish": {
+    "behavior": {
+      "cleanPublish": {
+        "package.json": {
+          "package": true,
+          "remove": [
+            "repository"
+          ],
+          "type": "json"
+        }
+      },
+      "cleanPrepack": {
+        "package.json": {
+          "add": {
+            "homepage": "https://keeex.me/oss"
+          },
+          "remove": [
+            "repository"
+          ],
+          "type": "json"
+        },
+        "README.md": {
+          "remove": [
+            "https://devtools.keeex.me",
+            "https://docs.keeex.me"
+          ],
+          "type": "text"
+        },
+        "sonar-project.properties": "remove"
+      },
+      "cleanSource": {
+        "package.json": {
+          "add": {
+            "homepage": "https://keeex.me/oss",
+            "scripts": {
+              "build": "tslib build",
+              "check": "tslib check",
+              "clean": "tslib clean",
+              "prepack": "npm run clean && npm run build",
+              "test": "tslib test"
+            }
+          },
+          "remove": [
+            "repository",
+            "cleanPublish"
+          ],
+          "type": "json"
+        },
+        "README.md": {
+          "remove": [
+            "https://devtools.keeex.me",
+            "https://docs.keeex.me"
+          ],
+          "type": "text"
+        },
+        "sonar-project.properties": "remove"
+      }
+    }
+  },
   "contributors": [
     {
       "name": "Gabriel Paul \"Cley Faye\" Risterucci",
       "email": "gabriel@keeex.net"
     }
   ],
-  "version": "3.0.3",
-  "type": "module",
-  "main": "lib/sax.js",
-  "license": "ISC",
-  "scripts": {
-    "test": "npm exec tap test/*.js",
-    "pretest": "npm exec tsc",
-    "posttest": "npm exec eslint .",
-    "prepack": "npm exec tsc"
+  "description": "An evented streaming XML parser in JavaScript",
+  "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.4",
+    "@babel/plugin-syntax-import-attributes": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "@eslint/js": "^9.29.0",
+    "@keeex/clean-publish": "^1.3.0",
+    "@keeex/eslint-config": "^2.5.6",
+    "@keeex/tslib": "^2.4.0",
+    "@keeex/utils-test": "^2.0.0",
+    "@swc/core": "^1.12.6",
+    "@types/mocha": "^10.0.10",
+    "babel-plugin-import-redirect": "^1.1.1",
+    "c8": "^10.1.3",
+    "eslint": "^9.29.0",
+    "eslint-import-resolver-typescript": "^4.4.3",
+    "eslint-plugin-import-x": "^4.16.0",
+    "eslint-plugin-mocha": "^11.1.0",
+    "eslint-plugin-promise": "^7.2.1",
+    "eslint-plugin-tsdoc": "^0.4.0",
+    "globals": "^16.2.0",
+    "knip": "^5.61.2",
+    "mocha": "^11.7.1",
+    "prettier": "^3.6.1",
+    "sonarqube-scanner": "^4.3.0",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.28.5",
+    "typedoc-plugin-missing-exports": "^4.0.0",
+    "typedoc-plugin-rename-defaults": "^0.7.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.0"
   },
-  "repository": "git://github.com/isaacs/sax-js.git",
   "files": [
     "lib/*.js",
-    "lib/*.d.ts"
+    "lib/*.d.ts",
+    "web/*.js",
+    "web/*.d.ts"
   ],
-  "tap": {
-    "check-coverage": true,
-    "branches": 75,
-    "functions": 60,
-    "lines": 75,
-    "statements": 75
+  "license": "ISC",
+  "main": "lib/sax.js",
+  "name": "@keeex/sax",
+  "repository": "git://github.com/isaacs/sax-js.git",
+  "scripts": {
+    "build": "tslib build",
+    "check": "tslib check",
+    "clean": "tslib clean",
+    "prepack": "npm run clean && npm run build && clean-publish cleanPublish",
+    "postpack": "clean-publish restore",
+    "prepublishOnly": "publish_check",
+    "setup": "tslib init",
+    "shell": "tsnode --inspect src/scripts/shell.js",
+    "sonar": "npm run clean && npx c8 --all --src=src --reporter=lcov -- node --loader ts-node/esm src/tests/test.ts && sonar-scanner -Dsonar.projectVersion=$(jq .version package.json)",
+    "test": "tslib test",
+    "testRaw": "tslib rawtest"
   },
   "devDependencies": {
     "@keeex/eslint-config": "^1.5.1",
@@ -44,5 +135,91 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "tslib": {
+    "buildWeb": true,
+    "exports": {
+      "base": {
+        ".": {
+          "node": "./lib/sax.js",
+          "browser": "./web/sax.js",
+          "react-native": "./web/sax.js",
+          "default": "./lib/sax.js"
+        }
+      },
+      "enabled": true,
+      "legacy": true
+    },
+    "knip": {
+      "ignoreDependencies": [
+        "@babel/plugin-syntax-import-attributes"
+      ]
+    }
+  },
+  "type": "module",
+  "version": "3.1.0",
+  "exports": {
+    ".": {
+      "node": "./lib/sax.js",
+      "browser": "./web/sax.js",
+      "react-native": "./web/sax.js",
+      "default": "./lib/sax.js"
+    },
+    "./consts.js": {
+      "node": "./lib/consts.js",
+      "browser": "./web/consts.js",
+      "react-native": "./web/consts.js",
+      "default": "./lib/consts.js"
+    },
+    "./lib/consts.js": "./lib/consts.js",
+    "./lib/sax.js": "./lib/sax.js",
+    "./lib/saxparser.js": "./lib/saxparser.js",
+    "./lib/saxstream.js": "./lib/saxstream.js",
+    "./lib/string_decoder.js": "./lib/string_decoder.js",
+    "./lib/types.js": "./lib/types.js",
+    "./lib/utils.js": "./lib/utils.js",
+    "./sax.js": {
+      "node": "./lib/sax.js",
+      "browser": "./web/sax.js",
+      "react-native": "./web/sax.js",
+      "default": "./lib/sax.js"
+    },
+    "./saxparser.js": {
+      "node": "./lib/saxparser.js",
+      "browser": "./web/saxparser.js",
+      "react-native": "./web/saxparser.js",
+      "default": "./lib/saxparser.js"
+    },
+    "./saxstream.js": {
+      "node": "./lib/saxstream.js",
+      "browser": "./web/saxstream.js",
+      "react-native": "./web/saxstream.js",
+      "default": "./lib/saxstream.js"
+    },
+    "./string_decoder.js": {
+      "node": "./lib/string_decoder.js",
+      "browser": "./web/string_decoder.js",
+      "react-native": "./web/string_decoder.js",
+      "default": "./lib/string_decoder.js"
+    },
+    "./types.js": {
+      "node": "./lib/types.js",
+      "browser": "./web/types.js",
+      "react-native": "./web/types.js",
+      "default": "./lib/types.js"
+    },
+    "./utils.js": {
+      "node": "./lib/utils.js",
+      "browser": "./web/utils.js",
+      "react-native": "./web/utils.js",
+      "default": "./lib/utils.js"
+    },
+    "./web/consts.js": "./web/consts.js",
+    "./web/sax.js": "./web/sax.js",
+    "./web/saxparser.js": "./web/saxparser.js",
+    "./web/saxstream.js": "./web/saxstream.js",
+    "./web/string_decoder.js": "./web/string_decoder.js",
+    "./web/types.js": "./web/types.js",
+    "./web/utils.js": "./web/utils.js"
   }
 }

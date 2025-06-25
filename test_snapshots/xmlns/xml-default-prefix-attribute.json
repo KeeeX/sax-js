@@ -1,0 +1,52 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "lang",
+        "name": "xml:lang",
+        "prefix": "xml",
+        "uri": "http://www.w3.org/XML/1998/namespace",
+        "value": "en"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "xml:lang": {
+            "local": "lang",
+            "name": "xml:lang",
+            "prefix": "xml",
+            "uri": "http://www.w3.org/XML/1998/namespace",
+            "value": "en"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "root",
+        "name": "root",
+        "ns": {},
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "root"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

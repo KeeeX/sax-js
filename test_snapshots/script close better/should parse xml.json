@@ -1,0 +1,71 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "HTML"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "HTML"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "HEAD"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "HEAD"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "SCRIPT"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "SCRIPT"
+      }
+    },
+    {
+      "eventType": "script",
+      "value": "'<div>foo</div></'"
+    },
+    {
+      "eventType": "closetag",
+      "value": "SCRIPT"
+    },
+    {
+      "eventType": "closetag",
+      "value": "HEAD"
+    },
+    {
+      "eventType": "closetag",
+      "value": "HTML"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

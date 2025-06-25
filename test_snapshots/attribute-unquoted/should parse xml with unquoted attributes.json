@@ -1,0 +1,52 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "ROOT",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "LENGTH",
+        "name": "LENGTH",
+        "prefix": "",
+        "uri": "",
+        "value": "12345"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "LENGTH": {
+            "local": "LENGTH",
+            "name": "LENGTH",
+            "prefix": "",
+            "uri": "",
+            "value": "12345"
+          }
+        },
+        "isSelfClosing": false,
+        "local": "ROOT",
+        "name": "ROOT",
+        "ns": {},
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "ROOT"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

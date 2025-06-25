@@ -1,0 +1,85 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "elm",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "",
+        "uri": "http://foo"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "",
+        "name": "xmlns",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "http://foo"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "attr",
+        "prefix": "",
+        "uri": "",
+        "value": "bar"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "attr": {
+            "local": "attr",
+            "name": "attr",
+            "prefix": "",
+            "uri": "",
+            "value": "bar"
+          },
+          "xmlns": {
+            "local": "",
+            "name": "xmlns",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "http://foo"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "elm",
+        "name": "elm",
+        "ns": {
+          "": "http://foo"
+        },
+        "prefix": "",
+        "uri": "http://foo"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "elm"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "",
+        "uri": "http://foo"
+      }
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

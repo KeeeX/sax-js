@@ -4,3 +4,4 @@
 /.tsbuildinfo
 /lib
 .*.swp
+/coverage
