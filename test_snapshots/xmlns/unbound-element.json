@@ -1,0 +1,32 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "unbound:root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "error",
+      "value": "Unbound namespace prefix: \"unbound:root\"\nLine: 0\nColumn: 15\nChar: >"
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": true,
+        "local": "root",
+        "name": "unbound:root",
+        "ns": {},
+        "prefix": "unbound",
+        "uri": "unbound"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "unbound:root"
+    }
+  ]
+}

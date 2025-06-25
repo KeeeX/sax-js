@@ -1,0 +1,126 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "a"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test",
+        "value": "&"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test0",
+        "value": "Testing control0"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test1",
+        "value": "Testing _uscore"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test2",
+        "value": "Testing #hash"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test3",
+        "value": "Testing :colon"
+      }
+    },
+    {
+      "eventType": "error",
+      "value": "Invalid character in entity name\nLine: 0\nColumn: 95\nChar: -"
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test4",
+        "value": "&-bad;"
+      }
+    },
+    {
+      "eventType": "error",
+      "value": "Invalid character in entity name\nLine: 0\nColumn: 110\nChar: ."
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test5",
+        "value": "&.bad;"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test6",
+        "value": "Testing u_score"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test7",
+        "value": "Testing d-ash"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test8",
+        "value": "Testing d.ot"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "test9",
+        "value": "Testing all:_#-."
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "test": "&",
+          "test0": "Testing control0",
+          "test1": "Testing _uscore",
+          "test2": "Testing #hash",
+          "test3": "Testing :colon",
+          "test4": "&-bad;",
+          "test5": "&.bad;",
+          "test6": "Testing u_score",
+          "test7": "Testing d-ash",
+          "test8": "Testing d.ot",
+          "test9": "Testing all:_#-."
+        },
+        "isSelfClosing": true,
+        "name": "a"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "a"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

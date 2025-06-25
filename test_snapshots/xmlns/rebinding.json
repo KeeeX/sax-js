@@ -1,0 +1,323 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "x",
+        "uri": "x1"
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "y",
+        "uri": "y1"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "x",
+        "name": "xmlns:x",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "x1"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "y",
+        "name": "xmlns:y",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "y1"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "x:a",
+        "prefix": "x",
+        "uri": "x1",
+        "value": "x1"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "y:a",
+        "prefix": "y",
+        "uri": "y1",
+        "value": "y1"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "x:a": {
+            "local": "a",
+            "name": "x:a",
+            "prefix": "x",
+            "uri": "x1",
+            "value": "x1"
+          },
+          "xmlns:x": {
+            "local": "x",
+            "name": "xmlns:x",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "x1"
+          },
+          "xmlns:y": {
+            "local": "y",
+            "name": "xmlns:y",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "y1"
+          },
+          "y:a": {
+            "local": "a",
+            "name": "y:a",
+            "prefix": "y",
+            "uri": "y1",
+            "value": "y1"
+          }
+        },
+        "isSelfClosing": false,
+        "local": "root",
+        "name": "root",
+        "ns": {
+          "x": "x1",
+          "y": "y1"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "rebind",
+        "ns": {
+          "x": "x1",
+          "y": "y1"
+        }
+      }
+    },
+    {
+      "eventType": "opennamespace",
+      "value": {
+        "prefix": "x",
+        "uri": "x2"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "x",
+        "name": "xmlns:x",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "x2"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "xmlns:x": {
+            "local": "x",
+            "name": "xmlns:x",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "x2"
+          }
+        },
+        "isSelfClosing": false,
+        "local": "rebind",
+        "name": "rebind",
+        "ns": {
+          "x": "x2"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "check",
+        "ns": {
+          "x": "x2"
+        }
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "x:a",
+        "prefix": "x",
+        "uri": "x2",
+        "value": "x2"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "y:a",
+        "prefix": "y",
+        "uri": "y1",
+        "value": "y1"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "x:a": {
+            "local": "a",
+            "name": "x:a",
+            "prefix": "x",
+            "uri": "x2",
+            "value": "x2"
+          },
+          "y:a": {
+            "local": "a",
+            "name": "y:a",
+            "prefix": "y",
+            "uri": "y1",
+            "value": "y1"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "check",
+        "name": "check",
+        "ns": {
+          "x": "x2"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "check"
+    },
+    {
+      "eventType": "closetag",
+      "value": "rebind"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "x",
+        "uri": "x2"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "check",
+        "ns": {
+          "x": "x1",
+          "y": "y1"
+        }
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "x:a",
+        "prefix": "x",
+        "uri": "x1",
+        "value": "x1"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "a",
+        "name": "y:a",
+        "prefix": "y",
+        "uri": "y1",
+        "value": "y1"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "x:a": {
+            "local": "a",
+            "name": "x:a",
+            "prefix": "x",
+            "uri": "x1",
+            "value": "x1"
+          },
+          "y:a": {
+            "local": "a",
+            "name": "y:a",
+            "prefix": "y",
+            "uri": "y1",
+            "value": "y1"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "check",
+        "name": "check",
+        "ns": {
+          "x": "x1",
+          "y": "y1"
+        },
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "check"
+    },
+    {
+      "eventType": "closetag",
+      "value": "root"
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "x",
+        "uri": "x1"
+      }
+    },
+    {
+      "eventType": "closenamespace",
+      "value": {
+        "prefix": "y",
+        "uri": "y1"
+      }
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

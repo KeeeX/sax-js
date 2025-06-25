@@ -41,24 +41,24 @@ export interface SAXParserOpts extends TextOpts {
 }
 
 const emptyBuffers: Record<BufferType, string> = {
-  comment: "",
-  sgmlDecl: "",
-  textNode: "",
-  tagName: "",
-  doctype: "",
-  procInstName: "",
-  procInstBody: "",
-  entity: "",
   attribName: "",
   attribValue: "",
   cdata: "",
+  comment: "",
+  doctype: "",
+  entity: "",
+  procInstBody: "",
+  procInstName: "",
   script: "",
+  sgmlDecl: "",
+  tagName: "",
+  textNode: "",
 };
 
 type CaseFunction = (str: string) => string;
 
-const cfToLowerCase = (str: string) => str.toLowerCase();
-const cfToUpperCase = (str: string) => str.toUpperCase();
+const cfToLowerCase = (str: string): string => str.toLowerCase();
+const cfToUpperCase = (str: string): string => str.toUpperCase();
 
 export default class SAXParser implements ParserEventsInterface {
   public ontext: EventHandler | undefined;
@@ -79,8 +79,8 @@ export default class SAXParser implements ParserEventsInterface {
   public onscript: EventHandler | undefined;
   public onopennamespace: EventHandler | undefined;
   public onclosenamespace: EventHandler | undefined;
-  private strict: boolean;
-  private opt: SAXParserOpts = {};
+  private readonly strict: boolean;
+  private readonly opt: SAXParserOpts = {};
   private q = "";
   private c = "";
   private bufferCheckPosition = MAX_BUFFER_LENGTH;
@@ -95,15 +95,15 @@ export default class SAXParser implements ParserEventsInterface {
   private noscript = true;
   private state = STATE.BEGIN;
   private strictEntities = false;
-  private parserEntities: EntitiesList = {};
+  public parserEntities: EntitiesList = {};
   private attribList: Array<Array<string>> = [];
   private namespace: Namespace | undefined;
   private trackPosition = false;
-  private position = 0;
+  #position = 0;
   private line = 0;
   private column = 0;
   private buffers: Record<BufferType, string> = {...emptyBuffers};
-  private startTagPosition = 0;
+  #startTagPosition = 0;
   private sawDoctype = false;
 
   public constructor(strict = false, opt: SAXParserOpts = {}) {
@@ -116,38 +116,44 @@ export default class SAXParser implements ParserEventsInterface {
     return this.namespace;
   }
 
+  public get position(): number {
+    return this.#position;
+  }
+
+  public get startTagPosition(): number {
+    return this.#startTagPosition;
+  }
+
   public emit(event: ParserEvents, data?: unknown): void {
     const handler = this[event];
     if (handler) handler(data);
   }
 
-  public resume(): SAXParser {
+  public resume(): this {
     this.error = null;
     return this;
   }
 
-  public close(): SAXParser {
+  public close(): this {
     return this.write(null);
   }
 
-  public flush(): SAXParser {
+  public flush(): this {
     this.flushBuffers();
     return this;
   }
 
-  // eslint-disable-next-line max-lines-per-function
-  public write(rawChunk: string | Uint8Array | null): SAXParser {
+  public write(rawChunk: string | Uint8Array | null): this {
     if (this.error) {
       throw this.error;
     }
     if (this.closed) {
-      return this.raiseError(
-        "Cannot write after close. Assign an onready handler.",
-      );
+      return this.raiseError("Cannot write after close. Assign an onready handler.");
     }
     if (rawChunk === null) {
       return this.end();
     }
+    /* eslint-disable-next-line @typescript-eslint/init-declarations */
     let chunk;
     if (typeof rawChunk === "string") {
       chunk = rawChunk;
@@ -158,7 +164,7 @@ export default class SAXParser implements ParserEventsInterface {
     while ((this.c = charAt(chunk, i++))) {
       const c = this.c;
       if (this.trackPosition) {
-        this.position++;
+        this.#position++;
         if (c === "\n") {
           this.line++;
           this.column = 0;
@@ -170,17 +176,19 @@ export default class SAXParser implements ParserEventsInterface {
       i = this.readStateRouter(i, chunk);
     } // while
 
-    if (this.position >= this.bufferCheckPosition) {
+    if (this.#position >= this.bufferCheckPosition) {
       this.checkBufferLength();
     }
     return this;
   }
 
-  public end(): SAXParser {
+  public end(): this {
     if (this.sawRoot && !this.closedRoot) this.strictFail("Unclosed root tag");
-    if ((this.state !== STATE.BEGIN)
-        && (this.state !== STATE.BEGIN_WHITESPACE)
-        && (this.state !== STATE.TEXT)) {
+    if (
+      this.state !== STATE.BEGIN &&
+      this.state !== STATE.BEGIN_WHITESPACE &&
+      this.state !== STATE.TEXT
+    ) {
       this.raiseError("Unexpected end");
     }
     this.closeText();
@@ -191,7 +199,7 @@ export default class SAXParser implements ParserEventsInterface {
     return this;
   }
 
-  private resetDefault() {
+  private resetDefault(): void {
     this.q = "";
     this.c = "";
     this.tags = [];
@@ -201,13 +209,13 @@ export default class SAXParser implements ParserEventsInterface {
     this.tag = null;
     this.error = null;
     this.attribList = [];
-    this.position = 0;
+    this.#position = 0;
     this.line = 0;
     this.column = 0;
-    this.startTagPosition = 0;
+    this.#startTagPosition = 0;
   }
 
-  private fullReset() {
+  private fullReset(): void {
     this.clearBuffers();
     this.resetDefault();
     this.bufferCheckPosition = this.opt.maxBufferLength ?? MAX_BUFFER_LENGTH;
@@ -217,9 +225,9 @@ export default class SAXParser implements ParserEventsInterface {
     this.noscript = Boolean(this.strict || this.opt.noscript);
     this.state = STATE.BEGIN;
     this.strictEntities = Boolean(this.opt.strictEntities);
-    this.parserEntities = (this.strictEntities
-      ? Object.create(XML_ENTITIES)
-      : Object.create(ENTITIES)) as EntitiesList;
+    this.parserEntities = (
+      this.strictEntities ? Object.create(XML_ENTITIES) : Object.create(ENTITIES)
+    ) as EntitiesList;
 
     // namespaces form a prototype chain.
     // it always points at the current tag,
@@ -233,7 +241,7 @@ export default class SAXParser implements ParserEventsInterface {
     this.emit(ParserEvents.ready);
   }
 
-  private checkBufferLength() {
+  private checkBufferLength(): void {
     const SAFETY_LENGTH = 10;
     const maxAllowed = Math.max(this.maxBufferLength, SAFETY_LENGTH);
     let maxActual = 0;
@@ -267,10 +275,10 @@ export default class SAXParser implements ParserEventsInterface {
     }
     // schedule the next check for the earliest possible buffer overrun.
     const m = this.maxBufferLength - maxActual;
-    this.bufferCheckPosition = m + this.position;
+    this.bufferCheckPosition = m + this.#position;
   }
 
-  private closeText() {
+  private closeText(): void {
     this.buffers[BufferType.textNode] = textopts(this.opt, this.buffers[BufferType.textNode]);
     if (this.buffers[BufferType.textNode]) {
       this.emit(ParserEvents.text, this.buffers[BufferType.textNode]);
@@ -278,16 +286,16 @@ export default class SAXParser implements ParserEventsInterface {
     this.buffers[BufferType.textNode] = "";
   }
 
-  private clearBuffers() {
+  private clearBuffers(): void {
     this.buffers = {...emptyBuffers};
   }
 
-  private emitNode(nodeType: ParserEvents, data?: unknown) {
+  private emitNode(nodeType: ParserEvents, data?: unknown): void {
     if (this.buffers[BufferType.textNode]) this.closeText();
     this.emit(nodeType, data);
   }
 
-  private raiseError(er: string) {
+  private raiseError(er: string): this {
     let erMsg = er;
     this.closeText();
     if (this.trackPosition) {
@@ -299,16 +307,16 @@ export default class SAXParser implements ParserEventsInterface {
     return this;
   }
 
-  private strictFail(message: string) {
+  private strictFail(message: string): void {
     if (this.strict) {
       this.raiseError(message);
     }
   }
 
-  private beginWhiteSpace() {
+  private beginWhiteSpace(): void {
     if (this.c === "<") {
       this.state = STATE.OPEN_WAKA;
-      this.startTagPosition = this.position;
+      this.#startTagPosition = this.#position;
     } else if (!isWhitespace(this.c)) {
       // have to process this as a text node.
       // weird, but happens.
@@ -318,7 +326,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private newTag() {
+  private newTag(): void {
     if (!this.strict) {
       this.buffers[BufferType.tagName] = this.looseCase(this.buffers[BufferType.tagName]);
     }
@@ -334,18 +342,14 @@ export default class SAXParser implements ParserEventsInterface {
     this.emitNode(ParserEvents.opentagstart, tag);
   }
 
-  // eslint-disable-next-line max-lines-per-function
-  private attrib() {
+  private attrib(): void {
     if (!this.strict) {
       this.buffers[BufferType.attribName] = this.looseCase(this.buffers[BufferType.attribName]);
     }
 
     if (
-      this.attribList.findIndex(c => c[0] === this.buffers[BufferType.attribName]) !== -1
-      || Object.prototype.hasOwnProperty.call(
-        this.tag?.attributes,
-        this.buffers[BufferType.attribName],
-      )
+      this.attribList.findIndex((c) => c[0] === this.buffers[BufferType.attribName]) !== -1 ||
+      Object.hasOwn(this.tag?.attributes ?? {}, this.buffers[BufferType.attribName])
     ) {
       this.buffers[BufferType.attribName] = "";
       this.buffers[BufferType.attribValue] = "";
@@ -360,11 +364,15 @@ export default class SAXParser implements ParserEventsInterface {
       if (prefix === "xmlns") {
         // namespace binding attribute. push the binding into scope
         if (local === "xml" && this.buffers[BufferType.attribValue] !== XML_NAMESPACE) {
-          this.strictFail(`xml: prefix must be bound to ${XML_NAMESPACE}\n`
-            + `Actual: ${this.buffers[BufferType.attribValue]}`);
+          this.strictFail(
+            `xml: prefix must be bound to ${XML_NAMESPACE}\n` +
+              `Actual: ${this.buffers[BufferType.attribValue]}`,
+          );
         } else if (local === "xmlns" && this.buffers[BufferType.attribValue] !== XMLNS_NAMESPACE) {
-          this.strictFail(`xmlns: prefix must be bound to ${XMLNS_NAMESPACE}\n`
-            + `Actual: ${this.buffers[BufferType.attribValue]}`);
+          this.strictFail(
+            `xmlns: prefix must be bound to ${XMLNS_NAMESPACE}\n` +
+              `Actual: ${this.buffers[BufferType.attribValue]}`,
+          );
         } else {
           const tag = this.tag;
           const parent = this.tags[this.tags.length - 1] || this;
@@ -372,9 +380,7 @@ export default class SAXParser implements ParserEventsInterface {
           if (tag.ns === parent.ns) {
             tag.ns = Object.create(parent.ns ?? null) as Namespace;
           }
-          if (!tag.ns) {
-            tag.ns = {};
-          }
+          tag.ns ??= {};
           tag.ns[local] = this.buffers[BufferType.attribValue];
         }
       }
@@ -389,8 +395,8 @@ export default class SAXParser implements ParserEventsInterface {
     } else {
       // in non-xmlns mode, we can emit the event right away
       if (!this.tag) throw new Error("Unexpected state");
-      this.tag.attributes[this.buffers[BufferType.attribName]]
-        = this.buffers[BufferType.attribValue];
+      this.tag.attributes[this.buffers[BufferType.attribName]] =
+        this.buffers[BufferType.attribValue];
       this.emitNode(ParserEvents.attribute, {
         name: this.buffers[BufferType.attribName],
         value: this.buffers[BufferType.attribValue],
@@ -401,8 +407,8 @@ export default class SAXParser implements ParserEventsInterface {
     this.buffers[BufferType.attribValue] = "";
   }
 
-  // eslint-disable-next-line complexity, max-lines-per-function
-  private openTag(selfClosing = false) {
+  /* eslint-disable-next-line max-lines-per-function */
+  private openTag(selfClosing = false): void {
     if (this.opt.xmlns) {
       // emit namespace binding events
       const tag = this.tag;
@@ -419,14 +425,15 @@ export default class SAXParser implements ParserEventsInterface {
       }
 
       if (tag.prefix && !tag.uri) {
-        this.strictFail(`Unbound namespace prefix: ${
-          JSON.stringify(this.buffers[BufferType.tagName])}`);
+        this.strictFail(
+          `Unbound namespace prefix: ${JSON.stringify(this.buffers[BufferType.tagName])}`,
+        );
         tag.uri = qn.prefix;
       }
 
       const parent = this.tags[this.tags.length - 1] || this;
       if (tag.ns && parent.ns !== tag.ns) {
-        Object.keys(tag.ns).forEach(p => {
+        Object.keys(tag.ns).forEach((p) => {
           this.emitNode(ParserEvents.opennamespace, {
             prefix: p,
             uri: tag.ns ? tag.ns[p] : undefined,
@@ -444,6 +451,7 @@ export default class SAXParser implements ParserEventsInterface {
         const qualName = qname(name, true);
         const prefix = qualName.prefix;
         const local = qualName.local;
+        /* eslint-disable-next-line @typescript-eslint/init-declarations */
         let uri;
         if (prefix === "") {
           uri = "";
@@ -453,18 +461,17 @@ export default class SAXParser implements ParserEventsInterface {
           uri = "";
         }
         const a = {
-          name,
-          value,
-          prefix,
           local,
+          name,
+          prefix,
           uri,
+          value,
         };
 
         // if there's any attributes with an undefined namespace,
         // then fail on them now.
         if (prefix && prefix !== "xmlns" && !uri) {
-          this.strictFail(`Unbound namespace prefix: ${
-            JSON.stringify(prefix)}`);
+          this.strictFail(`Unbound namespace prefix: ${JSON.stringify(prefix)}`);
           a.uri = prefix;
         }
         if (!this.tag) throw new Error("Unexpected state");
@@ -497,7 +504,7 @@ export default class SAXParser implements ParserEventsInterface {
   }
 
   // eslint-disable-next-line max-lines-per-function
-  private closeTag() {
+  private closeTag(): void {
     if (!this.buffers[BufferType.tagName]) {
       this.strictFail("Weird empty close tag.");
       this.buffers[BufferType.textNode] += "</>";
@@ -553,7 +560,7 @@ export default class SAXParser implements ParserEventsInterface {
       const parent = this.tags[this.tags.length - 1] || this;
       if (this.opt.xmlns && tag.ns !== parent.ns && tag.ns) {
         // remove namespace bindings introduced by tag
-        Object.keys(tag.ns).forEach(p => {
+        Object.keys(tag.ns).forEach((p) => {
           if (!tag.ns) throw new Error("Unexpected state");
           const n = tag.ns[p];
           this.emitNode(ParserEvents.closenamespace, {prefix: p, uri: n});
@@ -568,9 +575,10 @@ export default class SAXParser implements ParserEventsInterface {
     this.state = STATE.TEXT;
   }
 
-  private parseEntity() {
+  private parseEntity(): string {
     let entity = this.buffers[BufferType.entity];
     const entityLC = entity.toLowerCase();
+    /* eslint-disable-next-line @typescript-eslint/init-declarations */
     let num;
     let numStr = "";
 
@@ -583,7 +591,7 @@ export default class SAXParser implements ParserEventsInterface {
     entity = entityLC;
     const HEXA = 16;
     const DECI = 10;
-    if (entity.charAt(0) === "#") {
+    if (entity.startsWith("#")) {
       if (entity.charAt(1) === "x") {
         const HEXA_DIGIT_COUNT = 2;
         entity = entity.slice(HEXA_DIGIT_COUNT);
@@ -604,7 +612,7 @@ export default class SAXParser implements ParserEventsInterface {
     return String.fromCodePoint(num);
   }
 
-  private flushBuffers() {
+  private flushBuffers(): void {
     this.closeText();
     if (this.buffers[BufferType.cdata] !== "") {
       this.emitNode(ParserEvents.cdata, this.buffers[BufferType.cdata]);
@@ -616,7 +624,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleBegin() {
+  private handleBegin(): void {
     this.state = STATE.BEGIN_WHITESPACE;
     if (this.c === "\uFEFF") {
       return;
@@ -632,7 +640,7 @@ export default class SAXParser implements ParserEventsInterface {
       while (c && c !== "<" && c !== "&") {
         c = charAt(chunk, i++);
         if (c && this.trackPosition) {
-          this.position++;
+          this.#position++;
           if (c === "\n") {
             this.line++;
             this.column = 0;
@@ -645,7 +653,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
     if (c === "<" && !(this.sawRoot && this.closedRoot && !this.strict)) {
       this.state = STATE.OPEN_WAKA;
-      this.startTagPosition = this.position;
+      this.#startTagPosition = this.#position;
     } else {
       if (!isWhitespace(c) && (!this.sawRoot || this.closedRoot)) {
         this.strictFail("Text data outside of root node.");
@@ -659,7 +667,7 @@ export default class SAXParser implements ParserEventsInterface {
     return i;
   }
 
-  private handleScript() {
+  private handleScript(): void {
     // only non-strict
     if (this.c === "<") {
       this.state = STATE.SCRIPT_ENDING;
@@ -668,7 +676,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleScriptEnding() {
+  private handleScriptEnding(): void {
     if (this.c === "/") {
       this.state = STATE.CLOSE_TAG;
     } else {
@@ -677,7 +685,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleOpenWaka() {
+  private handleOpenWaka(): void {
     let c = this.c;
     // either a /, ?, !, or text is coming next.
     if (c === "!") {
@@ -698,8 +706,8 @@ export default class SAXParser implements ParserEventsInterface {
     } else {
       this.strictFail("Unencoded <");
       // if there was some whitespace, then add that in.
-      if (this.startTagPosition + 1 < this.position) {
-        const pad = this.position - this.startTagPosition;
+      if (this.#startTagPosition + 1 < this.#position) {
+        const pad = this.#position - this.#startTagPosition;
         c = new Array(pad).join(" ") + c;
       }
       this.buffers[BufferType.textNode] += `<${c}`;
@@ -707,7 +715,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleSGMLDecl() {
+  private handleSGMLDecl(): void {
     if ((this.buffers[BufferType.sgmlDecl] + this.c).toUpperCase() === CDATA) {
       this.emitNode(ParserEvents.opencdata);
       this.state = STATE.CDATA;
@@ -736,7 +744,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleSGMLDeclQuoted() {
+  private handleSGMLDeclQuoted(): void {
     if (this.c === this.q) {
       this.state = STATE.SGML_DECL;
       this.q = "";
@@ -744,7 +752,7 @@ export default class SAXParser implements ParserEventsInterface {
     this.buffers[BufferType.sgmlDecl] += this.c;
   }
 
-  private handleDoctype() {
+  private handleDoctype(): void {
     if (this.c === ">") {
       this.state = STATE.TEXT;
       this.emitNode(ParserEvents.doctype, this.buffers[BufferType.doctype]);
@@ -761,7 +769,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleDoctypeQuoted() {
+  private handleDoctypeQuoted(): void {
     this.buffers[BufferType.doctype] += this.c;
     if (this.c === this.q) {
       this.q = "";
@@ -769,7 +777,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleDoctypeDTD() {
+  private handleDoctypeDTD(): void {
     this.buffers[BufferType.doctype] += this.c;
     if (this.c === "]") {
       this.state = STATE.DOCTYPE;
@@ -779,7 +787,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleDoctypeDTDQuoted() {
+  private handleDoctypeDTDQuoted(): void {
     this.buffers[BufferType.doctype] += this.c;
     if (this.c === this.q) {
       this.state = STATE.DOCTYPE_DTD;
@@ -787,7 +795,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleComment() {
+  private handleComment(): void {
     if (this.c === "-") {
       this.state = STATE.COMMENT_ENDING;
     } else {
@@ -795,7 +803,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCommentEnding() {
+  private handleCommentEnding(): void {
     if (this.c === "-") {
       this.state = STATE.COMMENT_ENDED;
       this.buffers[BufferType.comment] = textopts(this.opt, this.buffers[BufferType.comment]);
@@ -809,7 +817,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCommentEnded() {
+  private handleCommentEnded(): void {
     if (this.c === ">") {
       this.state = STATE.TEXT;
     } else {
@@ -821,7 +829,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCData() {
+  private handleCData(): void {
     if (this.c === "]") {
       this.state = STATE.CDATA_ENDING;
     } else {
@@ -829,7 +837,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCDataEnding() {
+  private handleCDataEnding(): void {
     if (this.c === "]") {
       this.state = STATE.CDATA_ENDING_2;
     } else {
@@ -838,7 +846,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCDataEnding2() {
+  private handleCDataEnding2(): void {
     if (this.c === ">") {
       if (this.buffers[BufferType.cdata]) {
         this.emitNode(ParserEvents.cdata, this.buffers[BufferType.cdata]);
@@ -854,7 +862,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleProcInst() {
+  private handleProcInst(): void {
     if (this.c === "?") {
       this.state = STATE.PROC_INST_ENDING;
     } else if (isWhitespace(this.c)) {
@@ -864,7 +872,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleProcInstBody() {
+  private handleProcInstBody(): void {
     if (!this.buffers[BufferType.procInstBody] && isWhitespace(this.c)) {
       return;
     }
@@ -875,15 +883,12 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleProcInstEnding() {
+  private handleProcInstEnding(): void {
     if (this.c === ">") {
-      this.emitNode(
-        ParserEvents.processinginstruction,
-        {
-          name: this.buffers[BufferType.procInstName],
-          body: this.buffers[BufferType.procInstBody],
-        },
-      );
+      this.emitNode(ParserEvents.processinginstruction, {
+        name: this.buffers[BufferType.procInstName],
+        body: this.buffers[BufferType.procInstBody],
+      });
       this.buffers[BufferType.procInstName] = "";
       this.buffers[BufferType.procInstBody] = "";
       this.state = STATE.TEXT;
@@ -893,7 +898,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleOpenTag() {
+  private handleOpenTag(): void {
     if (isMatch(nameBody, this.c)) {
       this.buffers[BufferType.tagName] += this.c;
     } else {
@@ -911,7 +916,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleOpenTagSlash() {
+  private handleOpenTagSlash(): void {
     if (this.c === ">") {
       this.openTag(true);
       this.closeTag();
@@ -921,7 +926,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleAttrib() {
+  private handleAttrib(): void {
     // haven't read the attribute name yet.
     if (isWhitespace(this.c)) {
       return;
@@ -939,7 +944,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleAttribName() {
+  private handleAttribName(): void {
     if (this.c === "=") {
       this.state = STATE.ATTRIB_VALUE;
     } else if (this.c === ">") {
@@ -956,7 +961,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleAttribNameSawWhite() {
+  private handleAttribNameSawWhite(): void {
     if (this.c === "=") {
       this.state = STATE.ATTRIB_VALUE;
     } else if (!isWhitespace(this.c)) {
@@ -964,13 +969,10 @@ export default class SAXParser implements ParserEventsInterface {
       if (!this.tag) throw new Error("Unexpected state");
       this.tag.attributes[this.buffers[BufferType.attribName]] = "";
       this.buffers[BufferType.attribValue] = "";
-      this.emitNode(
-        ParserEvents.attribute,
-        {
-          name: this.buffers[BufferType.attribName],
-          value: "",
-        },
-      );
+      this.emitNode(ParserEvents.attribute, {
+        name: this.buffers[BufferType.attribName],
+        value: "",
+      });
       this.buffers[BufferType.attribName] = "";
       if (this.c === ">") {
         this.openTag();
@@ -984,7 +986,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleAttribValue() {
+  private handleAttribValue(): void {
     if (isWhitespace(this.c)) {
       return;
     }
@@ -998,7 +1000,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleAttribValueQuoted() {
+  private handleAttribValueQuoted(): void {
     if (this.c !== this.q) {
       if (this.c === "&") {
         this.state = STATE.ATTRIB_VALUE_ENTITY_Q;
@@ -1012,7 +1014,7 @@ export default class SAXParser implements ParserEventsInterface {
     this.state = STATE.ATTRIB_VALUE_CLOSED;
   }
 
-  private handleAttribValueClosed() {
+  private handleAttribValueClosed(): void {
     if (isWhitespace(this.c)) {
       this.state = STATE.ATTRIB;
     } else if (this.c === ">") {
@@ -1029,7 +1031,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleAttribValueUnquoted() {
+  private handleAttribValueUnquoted(): void {
     if (!isAttribEnd(this.c)) {
       if (this.c === "&") {
         this.state = STATE.ATTRIB_VALUE_ENTITY_U;
@@ -1046,7 +1048,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCloseTag() {
+  private handleCloseTag(): void {
     if (!this.buffers[BufferType.tagName]) {
       if (isWhitespace(this.c)) {
         return;
@@ -1077,7 +1079,7 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleCloseTagSawWhite() {
+  private handleCloseTagSawWhite(): void {
     if (isWhitespace(this.c)) {
       return;
     }
@@ -1088,8 +1090,10 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  private handleTextEntity() {
+  private handleTextEntity(): void {
+    /* eslint-disable-next-line @typescript-eslint/init-declarations */
     let returnState;
+    /* eslint-disable-next-line @typescript-eslint/init-declarations */
     let buffer;
     switch (this.state) {
       case STATE.TEXT_ENTITY:
@@ -1124,52 +1128,118 @@ export default class SAXParser implements ParserEventsInterface {
     }
   }
 
-  // eslint-disable-next-line complexity
+  /* eslint-disable-next-line max-lines-per-function */
   private readStateRouter(initialI: number, chunk: string): number {
     let i = initialI;
     switch (this.state) {
-    /* eslint-disable max-statements-per-line */
-      case STATE.BEGIN: this.handleBegin(); break;
-      case STATE.BEGIN_WHITESPACE: this.beginWhiteSpace(); break;
-      case STATE.TEXT: i = this.handleText(initialI, chunk); break;
-      case STATE.SCRIPT: this.handleScript(); break;
-      case STATE.SCRIPT_ENDING: this.handleScriptEnding(); break;
-      case STATE.OPEN_WAKA: this.handleOpenWaka(); break;
-      case STATE.SGML_DECL: this.handleSGMLDecl(); break;
-      case STATE.SGML_DECL_QUOTED: this.handleSGMLDeclQuoted(); break;
-      case STATE.DOCTYPE: this.handleDoctype(); break;
-      case STATE.DOCTYPE_QUOTED: this.handleDoctypeQuoted(); break;
-      case STATE.DOCTYPE_DTD: this.handleDoctypeDTD(); break;
-      case STATE.DOCTYPE_DTD_QUOTED: this.handleDoctypeDTDQuoted(); break;
-      case STATE.COMMENT: this.handleComment(); break;
-      case STATE.COMMENT_ENDING: this.handleCommentEnding(); break;
-      case STATE.COMMENT_ENDED: this.handleCommentEnded(); break;
-      case STATE.CDATA: this.handleCData(); break;
-      case STATE.CDATA_ENDING: this.handleCDataEnding(); break;
-      case STATE.CDATA_ENDING_2: this.handleCDataEnding2(); break;
-      case STATE.PROC_INST: this.handleProcInst(); break;
-      case STATE.PROC_INST_BODY: this.handleProcInstBody(); break;
-      case STATE.PROC_INST_ENDING: this.handleProcInstEnding(); break;
-      case STATE.OPEN_TAG: this.handleOpenTag(); break;
-      case STATE.OPEN_TAG_SLASH: this.handleOpenTagSlash(); break;
-      case STATE.ATTRIB: this.handleAttrib(); break;
-      case STATE.ATTRIB_NAME: this.handleAttribName(); break;
-      case STATE.ATTRIB_NAME_SAW_WHITE: this.handleAttribNameSawWhite(); break;
-      case STATE.ATTRIB_VALUE: this.handleAttribValue(); break;
-      case STATE.ATTRIB_VALUE_QUOTED: this.handleAttribValueQuoted(); break;
-      case STATE.ATTRIB_VALUE_CLOSED: this.handleAttribValueClosed(); break;
-      case STATE.ATTRIB_VALUE_UNQUOTED: this.handleAttribValueUnquoted(); break;
-      case STATE.CLOSE_TAG: this.handleCloseTag(); break;
-      case STATE.CLOSE_TAG_SAW_WHITE: this.handleCloseTagSawWhite(); break;
-      case STATE.TEXT_ENTITY: this.handleTextEntity(); break;
-      case STATE.ATTRIB_VALUE_ENTITY_Q: this.handleTextEntity(); break;
-      case STATE.ATTRIB_VALUE_ENTITY_U: this.handleTextEntity(); break;
-        /* eslint-enable max-statements-per-line */
-
+      case STATE.BEGIN:
+        this.handleBegin();
+        break;
+      case STATE.BEGIN_WHITESPACE:
+        this.beginWhiteSpace();
+        break;
+      case STATE.TEXT:
+        i = this.handleText(initialI, chunk);
+        break;
+      case STATE.SCRIPT:
+        this.handleScript();
+        break;
+      case STATE.SCRIPT_ENDING:
+        this.handleScriptEnding();
+        break;
+      case STATE.OPEN_WAKA:
+        this.handleOpenWaka();
+        break;
+      case STATE.SGML_DECL:
+        this.handleSGMLDecl();
+        break;
+      case STATE.SGML_DECL_QUOTED:
+        this.handleSGMLDeclQuoted();
+        break;
+      case STATE.DOCTYPE:
+        this.handleDoctype();
+        break;
+      case STATE.DOCTYPE_QUOTED:
+        this.handleDoctypeQuoted();
+        break;
+      case STATE.DOCTYPE_DTD:
+        this.handleDoctypeDTD();
+        break;
+      case STATE.DOCTYPE_DTD_QUOTED:
+        this.handleDoctypeDTDQuoted();
+        break;
+      case STATE.COMMENT:
+        this.handleComment();
+        break;
+      case STATE.COMMENT_ENDING:
+        this.handleCommentEnding();
+        break;
+      case STATE.COMMENT_ENDED:
+        this.handleCommentEnded();
+        break;
+      case STATE.CDATA:
+        this.handleCData();
+        break;
+      case STATE.CDATA_ENDING:
+        this.handleCDataEnding();
+        break;
+      case STATE.CDATA_ENDING_2:
+        this.handleCDataEnding2();
+        break;
+      case STATE.PROC_INST:
+        this.handleProcInst();
+        break;
+      case STATE.PROC_INST_BODY:
+        this.handleProcInstBody();
+        break;
+      case STATE.PROC_INST_ENDING:
+        this.handleProcInstEnding();
+        break;
+      case STATE.OPEN_TAG:
+        this.handleOpenTag();
+        break;
+      case STATE.OPEN_TAG_SLASH:
+        this.handleOpenTagSlash();
+        break;
+      case STATE.ATTRIB:
+        this.handleAttrib();
+        break;
+      case STATE.ATTRIB_NAME:
+        this.handleAttribName();
+        break;
+      case STATE.ATTRIB_NAME_SAW_WHITE:
+        this.handleAttribNameSawWhite();
+        break;
+      case STATE.ATTRIB_VALUE:
+        this.handleAttribValue();
+        break;
+      case STATE.ATTRIB_VALUE_QUOTED:
+        this.handleAttribValueQuoted();
+        break;
+      case STATE.ATTRIB_VALUE_CLOSED:
+        this.handleAttribValueClosed();
+        break;
+      case STATE.ATTRIB_VALUE_UNQUOTED:
+        this.handleAttribValueUnquoted();
+        break;
+      case STATE.CLOSE_TAG:
+        this.handleCloseTag();
+        break;
+      case STATE.CLOSE_TAG_SAW_WHITE:
+        this.handleCloseTagSawWhite();
+        break;
+      case STATE.TEXT_ENTITY:
+        this.handleTextEntity();
+        break;
+      case STATE.ATTRIB_VALUE_ENTITY_Q:
+        this.handleTextEntity();
+        break;
+      case STATE.ATTRIB_VALUE_ENTITY_U:
+        this.handleTextEntity();
+        break;
       default:
         throw new Error(`Unknown state: ${this.state}`);
     }
-
     return i;
   }
 }

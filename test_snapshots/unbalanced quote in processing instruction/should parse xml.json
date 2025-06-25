@@ -1,0 +1,40 @@
+{
+  "snapshot": [
+    {
+      "eventType": "processinginstruction",
+      "value": {
+        "body": "unbalanced \"quotes",
+        "name": "has"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "xml"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "body"
+    },
+    {
+      "eventType": "closetag",
+      "value": "xml"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

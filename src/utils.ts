@@ -18,17 +18,21 @@ export const charAt = (chunk: string, i: number): string => {
   return result;
 };
 
-export const isWhitespace = (c: string): boolean => c === " " || c === "\n" || c === "\r" || c === "\t";
+export const isWhitespace = (c: string): boolean =>
+  c === " " || c === "\n" || c === "\r" || c === "\t";
 
 export const isMatch = (regex: RegExp, c: string): boolean => regex.test(c);
 
 export const notMatch = (regex: RegExp, c: string): boolean => !isMatch(regex, c);
 
-export const isQuote = (c: string): boolean => c === "\"" || c === "'";
+export const isQuote = (c: string): boolean => c === '"' || c === "'";
 
 export const isAttribEnd = (c: string): boolean => c === ">" || isWhitespace(c);
 
-export const qname = (name: string, attribute = false): {
+export const qname = (
+  name: string,
+  attribute = false,
+): {
   prefix: string;
   local: string;
 } => {

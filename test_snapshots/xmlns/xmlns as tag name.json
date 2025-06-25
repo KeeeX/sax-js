@@ -1,0 +1,34 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xmlns",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": true,
+        "local": "xmlns",
+        "name": "xmlns",
+        "ns": {},
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "xmlns"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

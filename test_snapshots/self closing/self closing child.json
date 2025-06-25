@@ -1,0 +1,90 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "ROOT"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "ROOT"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "CHILD"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "CHILD"
+      }
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "HAHA"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": true,
+        "name": "HAHA"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "HAHA"
+    },
+    {
+      "eventType": "closetag",
+      "value": "CHILD"
+    },
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "MONKEY"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "MONKEY"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "=(|)"
+    },
+    {
+      "eventType": "closetag",
+      "value": "MONKEY"
+    },
+    {
+      "eventType": "closetag",
+      "value": "ROOT"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

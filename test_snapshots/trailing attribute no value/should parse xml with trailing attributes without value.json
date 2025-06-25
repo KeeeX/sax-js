@@ -1,0 +1,34 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "ROOT"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "ATTRIB",
+        "value": "attrib"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "ATTRIB": "attrib"
+        },
+        "isSelfClosing": false,
+        "name": "ROOT"
+      }
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

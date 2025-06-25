@@ -1,0 +1,33 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "A"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": false,
+        "name": "A"
+      }
+    },
+    {
+      "eventType": "text",
+      "value": "🔥"
+    },
+    {
+      "eventType": "closetag",
+      "value": "A"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

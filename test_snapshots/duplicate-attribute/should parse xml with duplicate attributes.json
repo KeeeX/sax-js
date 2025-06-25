@@ -1,0 +1,38 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "SPAN"
+      }
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "name": "ID",
+        "value": "hello"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "ID": "hello"
+        },
+        "isSelfClosing": false,
+        "name": "SPAN"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "SPAN"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

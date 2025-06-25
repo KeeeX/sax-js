@@ -1,0 +1,56 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xml:root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "error",
+      "value": "xml: prefix must be bound to http://www.w3.org/XML/1998/namespace\nActual: ERROR\nLine: 0\nColumn: 27\nChar: '"
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "xml",
+        "name": "xmlns:xml",
+        "prefix": "xmlns",
+        "uri": "http://www.w3.org/2000/xmlns/",
+        "value": "ERROR"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "xmlns:xml": {
+            "local": "xml",
+            "name": "xmlns:xml",
+            "prefix": "xmlns",
+            "uri": "http://www.w3.org/2000/xmlns/",
+            "value": "ERROR"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "root",
+        "name": "xml:root",
+        "ns": {},
+        "prefix": "xml",
+        "uri": "http://www.w3.org/XML/1998/namespace"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "xml:root"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

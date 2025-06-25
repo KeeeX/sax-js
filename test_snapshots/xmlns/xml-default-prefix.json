@@ -1,0 +1,34 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "xml:root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {},
+        "isSelfClosing": true,
+        "local": "root",
+        "name": "xml:root",
+        "ns": {},
+        "prefix": "xml",
+        "uri": "http://www.w3.org/XML/1998/namespace"
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "xml:root"
+    },
+    {
+      "eventType": "end"
+    },
+    {
+      "eventType": "ready"
+    }
+  ]
+}

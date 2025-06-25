@@ -1,0 +1,50 @@
+{
+  "snapshot": [
+    {
+      "eventType": "opentagstart",
+      "value": {
+        "attributes": {},
+        "name": "root",
+        "ns": {}
+      }
+    },
+    {
+      "eventType": "error",
+      "value": "Unbound namespace prefix: \"unbound\"\nLine: 0\nColumn: 28\nChar: >"
+    },
+    {
+      "eventType": "attribute",
+      "value": {
+        "local": "attr",
+        "name": "unbound:attr",
+        "prefix": "unbound",
+        "uri": "unbound",
+        "value": "value"
+      }
+    },
+    {
+      "eventType": "opentag",
+      "value": {
+        "attributes": {
+          "unbound:attr": {
+            "local": "attr",
+            "name": "unbound:attr",
+            "prefix": "unbound",
+            "uri": "unbound",
+            "value": "value"
+          }
+        },
+        "isSelfClosing": true,
+        "local": "root",
+        "name": "root",
+        "ns": {},
+        "prefix": "",
+        "uri": ""
+      }
+    },
+    {
+      "eventType": "closetag",
+      "value": "root"
+    }
+  ]
+}
